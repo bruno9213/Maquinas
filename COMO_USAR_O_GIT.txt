@@ -4,10 +4,11 @@ git init
 
 git clone /caminho_da_pasta_criada
 
-Para adicionar ficheiros no repositório:
+Para adicionar ficheiros no local:
 git add *
 git commit -m "mensagem_que_quiseres"
 
-
+Para atualizar o repositorio local:
+git pull
 
 
