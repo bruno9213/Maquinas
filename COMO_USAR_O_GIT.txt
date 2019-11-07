@@ -1,14 +1,14 @@
-Criar um novo repositório:
+/////////////////// Criar um novo repositório:
 
 git init
-
 git clone /caminho_da_pasta_criada
 
-Para adicionar ficheiros no local:
+/////////////////// Para escolher os ficheiros locais e envialos para o repositorio:
+
 git add *
 git commit -m "mensagem_que_quiseres"
+git push
 
-Para atualizar o repositorio local:
+/////////////////// Para atualizar o repositorio
+
 git pull
-
-
