@@ -1,4 +1,4 @@
-/////////////////// Criar um novo repositório:
+﻿/////////////////// Criar um novo repositório:
 
 git init
 git clone https://github.com/bruno9213/Maquinas
@@ -17,3 +17,5 @@ git pull
 
 
 ////////////////7fesghregre
+
+wooooooooooooooooooooooooooo
