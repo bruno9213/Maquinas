@@ -8,7 +8,7 @@ git clone https://github.com/bruno9213/Maquinas
 
 git add *
 git commit -m "mensagem_que_quiseres"
-git push
+git push origin master
 
 /////////////////// Para atualizar o repositorio
 
