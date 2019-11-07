@@ -4,7 +4,9 @@ git init
 git clone https://github.com/bruno9213/Maquinas
 
 
-/////////////////// Para escolher os ficheiros locais e envialos para o repositorio:
+/////////////////// Para escolher os ficheiros locais e envia-los para o repositorio:
+
+««ATENÇÃO»»»TÊM DE ESTAR NA PASTA MAQUINAS SENÃO RIP 
 
 git add *
 git commit -m "mensagem_que_quiseres"
