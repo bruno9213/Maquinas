@@ -12,3 +12,7 @@ git push
 /////////////////// Para atualizar o repositorio
 
 git pull
+
+
+
+////////////////7fesghregre
