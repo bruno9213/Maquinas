@@ -1,7 +1,8 @@
 /////////////////// Criar um novo repositório:
 
 git init
-git clone /caminho_da_pasta_criada
+git clone https://github.com/bruno9213/Maquinas
+
 
 /////////////////// Para escolher os ficheiros locais e envialos para o repositorio:
 
