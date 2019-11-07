@@ -1,0 +1,13 @@
+Criar um novo repositório:
+
+git init
+
+git clone /caminho_da_pasta_criada
+
+Para adicionar ficheiros no repositório:
+git add *
+git commit -m "mensagem_que_quiseres"
+
+
+
+
