@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TestGitAPP</string>
     <string name="nome">Nome da Aplicaçao</string>
+    <string name="sentido">Sentido:</string>
+    <string name="atualizado">Atualizado há 8 minutos:</string>
+    <string name="estado_transito">Estado do trânsito:</string>
 </resources>
