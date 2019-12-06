@@ -1,0 +1,9 @@
+eliminar tabela estatisticas;
+
+criar views das estatisticas;
+
+sistema???
+
+criar triggers para refresh das estatisticas
+
+RELATORIO 
