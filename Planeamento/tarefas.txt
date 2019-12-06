@@ -1,9 +1,18 @@
+Tarefas:
+
 eliminar tabela estatisticas;
 
-criar views das estatisticas;
+criar as views das estatisticas;
 
-sistema???
+o que fazer com tabela sistema???
 
-criar triggers para refresh das estatisticas
+criar function/trigger/algo para fazer refresh das views das estatisticas de 10 em 10 minutos
 
-RELATORIO 
+ver como é que vai ser meter dados em stream, simular isso or smt
+
+ver do relatório, emendar o que estiver mal
+
+definir melhor a distribuição do que se passa
+
+definir os casos de teste
+
