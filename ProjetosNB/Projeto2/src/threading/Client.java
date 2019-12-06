@@ -21,7 +21,7 @@ public class Client extends Thread {
 //			da aplicação ServidorDeChat. Nada impede a mudança
 //			desses valores, tentando estabelecer uma conexão com
 //			outras portas em outras máquinas.
-			Socket conexao = new Socket("127.0.0.1", 8090);                        
+			Socket conexao = new Socket("192.168.1.72", 8090);                        
 //                      Mas uma vez estabelecida a comunicação, deve-se obter os
 //			objetos que permitem controlar o fluxo de comunicação
 			PrintStream saida = new PrintStream(conexao.getOutputStream());
