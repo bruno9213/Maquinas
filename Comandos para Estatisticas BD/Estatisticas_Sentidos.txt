@@ -1,3 +1,5 @@
+PARA FAZER AS ESTATISTICAS DOS ULTIMOS 10 MINUTOS DOS 2 SENTIDOS
+
 create materialized view "sentido1_last_10" as
 SELECT count(*) as "Contagem", avg(velocidade) as "Velocidade Media", max(velocidade) as "Velocidade Maxima", min(velocidade) as "Velocidade Minima"
 FROM dadosobjetos
@@ -30,3 +32,30 @@ select *,
 	from sentido2_last_10
 	group by "Velocidade Media", "Contagem", "Velocidade Maxima", "Velocidade Minima"
 ;
+
+PARA CRIAR O HISTÓRICO DAS VELOCIDADES DOS DOIS SENTIDOS
+
+create materialized view "Histórico Sentido 1" as
+select timestamp as "Data Hora", velocidade as "Velocidade"
+from dadosobjetos 
+where id_type in(2,3,4) and sentido='1'
+;
+create materialized view "Histórico Sentido 2" as
+select timestamp as "Data Hora", abs(velocidade) as "Velocidade"
+from dadosobjetos 
+where id_type in(2,3,4) and sentido='0'
+;
+
+PARA VER A VELOCIDADE MAXIMA E MINIMA TOTAL DOS DOIS SENTIDOS
+
+create materialized view "Velocidades Maxima e Minima Sentido 2" as
+select max(abs("Velocidade")) as "Velocidade Maxima",min(abs("Velocidade")) as "Velocidade Minima"  
+from "Histórico Sentido 2"
+;
+create materialized view "Velocidades Maxima e Minima Sentido 1" as
+select max(abs("Velocidade")) as "Velocidade Maxima",min(abs("Velocidade")) as "Velocidade Minima"  
+from "Histórico Sentido 1"
+;
+
+
+REFRESH MATERIALIZED VIEW <NAME VIEW>;
