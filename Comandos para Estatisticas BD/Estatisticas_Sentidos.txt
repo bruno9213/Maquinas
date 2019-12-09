@@ -14,20 +14,24 @@ and id_type in(2,3,4) and sentido='0'
 ;
 create materialized view "Estatisticas Sentido 1" as
 select *,
-	CASE WHEN "Velocidade Media">=50       THEN 'pouco trânsito'
+	CASE when "Contagem"=0 then 'pouco trânsito'
+		 WHEN "Velocidade Media">=50       THEN 'pouco trânsito'
 		 WHEN "Velocidade Media"<50 and "Velocidade Media">=30 THEN 'trânsito moderado'
 		 when "Velocidade Media"<30 and "Velocidade Media">=10 then 'muito trânsito'
-		 ELSE 'congestionamento extremo'
+		 when "Velocidade Media"<10 and "Velocidade Media">=0 then 'congestionamento extremo'
+		 ELSE 'erro'
 	END AS "Estado do Trânsito"
 	from sentido1_last_10
 	group by "Velocidade Media", "Contagem", "Velocidade Maxima", "Velocidade Minima"
 ;
 create materialized view "Estatisticas Sentido 2" as
 select *,
-	CASE WHEN "Velocidade Media">=50       THEN 'pouco trânsito'
+	CASE when "Contagem"=0 then 'pouco trânsito'
+		 WHEN "Velocidade Media">=50       THEN 'pouco trânsito'
 		 WHEN "Velocidade Media"<50 and "Velocidade Media">=30 THEN 'trânsito moderado'
 		 when "Velocidade Media"<30 and "Velocidade Media">=10 then 'muito trânsito'
-		 ELSE 'congestionamento extremo'
+		 when "Velocidade Media"<10 and "Velocidade Media">=0 then 'congestionamento extremo'
+		 ELSE 'erro'
 	END AS "Estado do Trânsito"
 	from sentido2_last_10
 	group by "Velocidade Media", "Contagem", "Velocidade Maxima", "Velocidade Minima"
