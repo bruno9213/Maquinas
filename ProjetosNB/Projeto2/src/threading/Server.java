@@ -62,6 +62,7 @@ public class Server extends Thread {
 
     public void run() {
         try {
+            
 //			objetos que permitem controlar fluxo de comunicação
             BufferedReader entrada = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
             PrintStream saida = new PrintStream(conexao.getOutputStream());
@@ -112,6 +113,7 @@ public class Server extends Thread {
 //			Caso ocorra alguma excessão de E/S, mostre qual foi.
             System.out.println("IOException: " + e);
         }
+        
     }
 //	enviar uma mensagem para todos, menos para o próprio
 

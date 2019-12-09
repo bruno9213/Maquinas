@@ -21,34 +21,16 @@ public class Client extends Thread {
 //			da aplicação ServidorDeChat. Nada impede a mudança
 //			desses valores, tentando estabelecer uma conexão com
 //			outras portas em outras máquinas.
-			Socket conexao = new Socket("192.168.1.72", 8090);                        
+			Socket conexao = new Socket("127.0.0.1", 8090);                        
 //                      Mas uma vez estabelecida a comunicação, deve-se obter os
 //			objetos que permitem controlar o fluxo de comunicação
-			PrintStream saida = new PrintStream(conexao.getOutputStream());
-			
-//			enviar antes de tudo o nome do usuário
-			BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Entre com o seu nome: ");
-			String meuNome = teclado.readLine();
-			saida.println(meuNome);
+			PrintStream saida = new PrintStream(conexao.getOutputStream());		
                         
 //			Uma vez que tudo está pronto, antes de iniciar o loop
 //			principal, executar a thread de recepção de mensagens.
 			Thread t = new Client(conexao);
 			t.start();
                         
-//			loop principal: obtendo uma linha digitada no teclado e
-//			enviando-a para o servidor.
-			String linha;
-			while (true) {
-//				ler a linha digitada no teclado
-				System.out.print("> ");
-				linha = teclado.readLine();
-//				antes de enviar, verifica se a conexão não foi fechada
-				if (done) {break;}
-//				envia para o servidor
-				saida.println(linha);
-			}
 		}
 		catch (IOException e) {
 //			Caso ocorra alguma excessão de E/S, mostre qual foi.
@@ -78,10 +60,6 @@ public class Client extends Thread {
 					System.out.println("Conexão encerrada!");
 					break;
 				}
-//				caso a linha não seja nula, deve-se imprimi-la
-				System.out.println();
-				System.out.println(linha);
-				System.out.print("...> ");
 			}
 			
 
@@ -92,5 +70,7 @@ public class Client extends Thread {
 		}
 //		sinaliza para o main que a conexão encerrou.
 		done = true;
+               
+                
 	}
 }

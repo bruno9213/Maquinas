@@ -7,6 +7,7 @@ package threading;
 
 import java.io.*;
 import java.net.*;
+
 public class ClientedeChat extends Thread {
 //	Flag que indica quando se deve terminar a execução.
 	private static boolean done = false;
