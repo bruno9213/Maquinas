@@ -1,18 +1,53 @@
 Tarefas:
 
-eliminar tabela estatisticas;
-
-criar as views das estatisticas;
-
-o que fazer com tabela sistema???
-
-criar function/trigger/algo para fazer refresh das views das estatisticas de 10 em 10 minutos
-
-ver como é que vai ser meter dados em stream, simular isso or smt
-
-ver do relatório, emendar o que estiver mal
-
-definir melhor a distribuição do que se passa
-
 definir os casos de teste
+
+que mudar no relatório:
+diagrama de entidades (remover sistema)
+remover escolha do admin de estatisticas visiveis (dos requisitos)
+
+--------------------
+
+Distribuição do sistema
+Base de dados - conecta com aplicação servidor através de API JDBC
+aplicação cliente conecta com aplicação servidor
+permite colocar e mostrar valores da base de dados
+
+
+Base de dados:
+-diagrama de entidades
+-implementação das classes desse diagrama na base de dados
+-criação de views para a criação das estatisticas de tráfego
+-views têm de ser atualizadas de 10 em 10 minutos --> será implementado na aplicação em java
+
+Api JDBC
+-faz conecção da aplicação java com a base de dados
+-permite fazer queries para a base de dados
+-inserir valores e ver estatisticas só a partir das views
+
+Aplicação JAVA
+
+Servidor
+Cliente 
+
+tarefas:
+
+-emendar o diagrama de classes --kinda done
+
+-definir quais as classes e métodos a implementar na aplicação --in progress
+
+
+-com base nisso temos de criar os casos de testes
+
+-depois temos que dividir tarefas
+
+
+
+-pessoas MUST ALL DO CODE
+
+
+-ALTERAR VIEWS PARA MOSTRAR O TEMPO ATUAL --> PARA AS PESSOAS SABEREM QUANDO É QUE FOI A ULTIMA ATUALIZACAO
+
+
+
 
