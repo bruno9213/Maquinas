@@ -16,3 +16,8 @@ definir melhor a distribuição do que se passa
 
 definir os casos de teste
 
+que mudar no relatório:
+diagrama de entidades (remover sistema)
+remover escolha do admin de estatisticas visiveis (dos requisitos)
+
+
