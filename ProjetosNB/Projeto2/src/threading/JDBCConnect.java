@@ -68,14 +68,13 @@ public class JDBCConnect {
 //        }
 //    }
 
-    public ResultSet getEverything() {
+    public ResultSet getThings(String str) {
         JDBCConnect app = new JDBCConnect();
         Connection conn = app.connect();
         ResultSet rs = null;
         try {
-            String consulta = "select * from login";
             Statement stm = (Statement) conn.createStatement();
-            rs = stm.executeQuery(consulta);
+            rs = stm.executeQuery(str);
         } catch (SQLException ex) {
         }
         return rs;

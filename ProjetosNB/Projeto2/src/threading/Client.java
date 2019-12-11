@@ -69,8 +69,7 @@ public class Client extends Thread {
 			System.out.println("IOException: " + e);
 		}
 //		sinaliza para o main que a conexão encerrou.
-		done = true;
-               
+		done = true;              
                 
 	}
 }

@@ -76,7 +76,8 @@ public class Server extends Thread {
             if (meuNome == null) {
                 return;
             }
-            sendToAll(saida, " entrou ", "no chat!");
+            sendToAll(saida, "", "");
+            
 
 //			Uma vez que se tem um cliente conectado e conhecido,
 //			coloca-se fluxo de saída para esse cliente no vetor de
@@ -126,6 +127,7 @@ public class Server extends Thread {
 //			envia para todos, menos para o próprio usuário
             if (chat != saida) {
                 chat.println(meuNome + acao + linha);
+       
             }
         }
     }
@@ -138,7 +140,7 @@ public class Server extends Thread {
 //			envia para todos, menos para o próprio usuário
 
             JDBCConnect c = new JDBCConnect();
-            ResultSet rs = c.getEverything();
+            ResultSet rs = c.getThings("select * from login");
             try {
                 while (rs.next()) {
                     String user = rs.getString("user");
