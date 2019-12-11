@@ -5,7 +5,7 @@
 -- Dumped from database version 11.6 (Ubuntu 11.6-1.pgdg18.04+1)
 -- Dumped by pg_dump version 11.6 (Ubuntu 11.6-1.pgdg18.04+1)
 
--- Started on 2019-12-09 15:30:56 WET
+-- Started on 2019-12-11 12:07:54 WET
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -40,148 +40,6 @@ CREATE TABLE public.dadosobjetos (
 ALTER TABLE public.dadosobjetos OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 25363)
--- Name: sentido1_last_10; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public.sentido1_last_10 AS
- SELECT count(*) AS "Contagem",
-    avg(dadosobjetos.velocidade) AS "Velocidade Media",
-    max(dadosobjetos.velocidade) AS "Velocidade Maxima",
-    min(dadosobjetos.velocidade) AS "Velocidade Minima"
-   FROM public.dadosobjetos
-  WHERE ((dadosobjetos."timestamp" >= ((now())::timestamp without time zone - '00:10:00'::interval)) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '1'::text))
-  WITH NO DATA;
-
-
-ALTER TABLE public.sentido1_last_10 OWNER TO postgres;
-
---
--- TOC entry 205 (class 1259 OID 25377)
--- Name: Estatisticas Sentido 1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Estatisticas Sentido 1" AS
- SELECT sentido1_last_10."Contagem",
-    sentido1_last_10."Velocidade Media",
-    sentido1_last_10."Velocidade Maxima",
-    sentido1_last_10."Velocidade Minima",
-        CASE
-            WHEN (sentido1_last_10."Contagem" = 0) THEN 'pouco trânsito'::text
-            WHEN (sentido1_last_10."Velocidade Media" >= (50)::numeric) THEN 'pouco trânsito'::text
-            WHEN ((sentido1_last_10."Velocidade Media" < (50)::numeric) AND (sentido1_last_10."Velocidade Media" >= (30)::numeric)) THEN 'trânsito moderado'::text
-            WHEN ((sentido1_last_10."Velocidade Media" < (30)::numeric) AND (sentido1_last_10."Velocidade Media" >= (10)::numeric)) THEN 'muito trânsito'::text
-            WHEN ((sentido1_last_10."Velocidade Media" < (10)::numeric) AND (sentido1_last_10."Velocidade Media" >= (0)::numeric)) THEN 'congestionamento extremo'::text
-            ELSE 'erro'::text
-        END AS "Estado do Trânsito"
-   FROM public.sentido1_last_10
-  GROUP BY sentido1_last_10."Velocidade Media", sentido1_last_10."Contagem", sentido1_last_10."Velocidade Maxima", sentido1_last_10."Velocidade Minima"
-  WITH NO DATA;
-
-
-ALTER TABLE public."Estatisticas Sentido 1" OWNER TO postgres;
-
---
--- TOC entry 204 (class 1259 OID 25370)
--- Name: sentido2_last_10; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public.sentido2_last_10 AS
- SELECT count(*) AS "Contagem",
-    abs(avg(dadosobjetos.velocidade)) AS "Velocidade Media",
-    max(abs(dadosobjetos.velocidade)) AS "Velocidade Maxima",
-    min(abs(dadosobjetos.velocidade)) AS "Velocidade Minima"
-   FROM public.dadosobjetos
-  WHERE ((dadosobjetos."timestamp" >= ((now())::timestamp without time zone - '00:10:00'::interval)) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '0'::text))
-  WITH NO DATA;
-
-
-ALTER TABLE public.sentido2_last_10 OWNER TO postgres;
-
---
--- TOC entry 206 (class 1259 OID 25385)
--- Name: Estatisticas Sentido 2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Estatisticas Sentido 2" AS
- SELECT sentido2_last_10."Contagem",
-    sentido2_last_10."Velocidade Media",
-    sentido2_last_10."Velocidade Maxima",
-    sentido2_last_10."Velocidade Minima",
-        CASE
-            WHEN (sentido2_last_10."Contagem" = 0) THEN 'pouco trânsito'::text
-            WHEN (sentido2_last_10."Velocidade Media" >= (50)::numeric) THEN 'pouco trânsito'::text
-            WHEN ((sentido2_last_10."Velocidade Media" < (50)::numeric) AND (sentido2_last_10."Velocidade Media" >= (30)::numeric)) THEN 'trânsito moderado'::text
-            WHEN ((sentido2_last_10."Velocidade Media" < (30)::numeric) AND (sentido2_last_10."Velocidade Media" >= (10)::numeric)) THEN 'muito trânsito'::text
-            WHEN ((sentido2_last_10."Velocidade Media" < (10)::numeric) AND (sentido2_last_10."Velocidade Media" >= (0)::numeric)) THEN 'congestionamento extremo'::text
-            ELSE 'erro'::text
-        END AS "Estado do Trânsito"
-   FROM public.sentido2_last_10
-  GROUP BY sentido2_last_10."Velocidade Media", sentido2_last_10."Contagem", sentido2_last_10."Velocidade Maxima", sentido2_last_10."Velocidade Minima"
-  WITH NO DATA;
-
-
-ALTER TABLE public."Estatisticas Sentido 2" OWNER TO postgres;
-
---
--- TOC entry 207 (class 1259 OID 25393)
--- Name: Histórico Sentido 1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Histórico Sentido 1" AS
- SELECT dadosobjetos."timestamp" AS "Data Hora",
-    dadosobjetos.velocidade AS "Velocidade"
-   FROM public.dadosobjetos
-  WHERE ((dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '1'::text))
-  WITH NO DATA;
-
-
-ALTER TABLE public."Histórico Sentido 1" OWNER TO postgres;
-
---
--- TOC entry 208 (class 1259 OID 25397)
--- Name: Histórico Sentido 2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Histórico Sentido 2" AS
- SELECT dadosobjetos."timestamp" AS "Data Hora",
-    abs(dadosobjetos.velocidade) AS "Velocidade"
-   FROM public.dadosobjetos
-  WHERE ((dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '0'::text))
-  WITH NO DATA;
-
-
-ALTER TABLE public."Histórico Sentido 2" OWNER TO postgres;
-
---
--- TOC entry 210 (class 1259 OID 25405)
--- Name: Velocidades Maxima e Minima Sentido 1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Velocidades Maxima e Minima Sentido 1" AS
- SELECT max(abs("Histórico Sentido 1"."Velocidade")) AS "Velocidade Maxima",
-    min(abs("Histórico Sentido 1"."Velocidade")) AS "Velocidade Minima"
-   FROM public."Histórico Sentido 1"
-  WITH NO DATA;
-
-
-ALTER TABLE public."Velocidades Maxima e Minima Sentido 1" OWNER TO postgres;
-
---
--- TOC entry 209 (class 1259 OID 25401)
--- Name: Velocidades Maxima e Minima Sentido 2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
---
-
-CREATE MATERIALIZED VIEW public."Velocidades Maxima e Minima Sentido 2" AS
- SELECT max(abs("Histórico Sentido 2"."Velocidade")) AS "Velocidade Maxima",
-    min(abs("Histórico Sentido 2"."Velocidade")) AS "Velocidade Minima"
-   FROM public."Histórico Sentido 2"
-  WITH NO DATA;
-
-
-ALTER TABLE public."Velocidades Maxima e Minima Sentido 2" OWNER TO postgres;
-
---
 -- TOC entry 200 (class 1259 OID 25307)
 -- Name: entidades; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -210,6 +68,120 @@ CREATE TABLE public.estado (
 
 
 ALTER TABLE public.estado OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 25363)
+-- Name: sentido1_last_10; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.sentido1_last_10 AS
+ SELECT count(*) AS "Contagem",
+    avg(dadosobjetos.velocidade) AS "Velocidade Media",
+    max(dadosobjetos.velocidade) AS "Velocidade Maxima",
+    min(dadosobjetos.velocidade) AS "Velocidade Minima"
+   FROM public.dadosobjetos
+  WHERE ((dadosobjetos."timestamp" >= ((now())::timestamp without time zone - '00:10:00'::interval)) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '1'::text))
+  WITH NO DATA;
+
+
+ALTER TABLE public.sentido1_last_10 OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 33905)
+-- Name: estatisticas_sentido_1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.estatisticas_sentido_1 AS
+ SELECT sentido1_last_10."Contagem",
+    sentido1_last_10."Velocidade Media",
+    sentido1_last_10."Velocidade Maxima",
+    sentido1_last_10."Velocidade Minima",
+        CASE
+            WHEN (sentido1_last_10."Contagem" = 0) THEN 'pouco trânsito'::text
+            WHEN (sentido1_last_10."Velocidade Media" >= (50)::numeric) THEN 'pouco trânsito'::text
+            WHEN ((sentido1_last_10."Velocidade Media" < (50)::numeric) AND (sentido1_last_10."Velocidade Media" >= (30)::numeric)) THEN 'trânsito moderado'::text
+            WHEN ((sentido1_last_10."Velocidade Media" < (30)::numeric) AND (sentido1_last_10."Velocidade Media" >= (10)::numeric)) THEN 'muito trânsito'::text
+            WHEN ((sentido1_last_10."Velocidade Media" < (10)::numeric) AND (sentido1_last_10."Velocidade Media" >= (0)::numeric)) THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS "Estado do Transito"
+   FROM public.sentido1_last_10
+  GROUP BY sentido1_last_10."Velocidade Media", sentido1_last_10."Contagem", sentido1_last_10."Velocidade Maxima", sentido1_last_10."Velocidade Minima"
+  WITH NO DATA;
+
+
+ALTER TABLE public.estatisticas_sentido_1 OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 25370)
+-- Name: sentido2_last_10; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.sentido2_last_10 AS
+ SELECT count(*) AS "Contagem",
+    abs(avg(dadosobjetos.velocidade)) AS "Velocidade Media",
+    max(abs(dadosobjetos.velocidade)) AS "Velocidade Maxima",
+    min(abs(dadosobjetos.velocidade)) AS "Velocidade Minima"
+   FROM public.dadosobjetos
+  WHERE ((dadosobjetos."timestamp" >= ((now())::timestamp without time zone - '00:10:00'::interval)) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '0'::text))
+  WITH NO DATA;
+
+
+ALTER TABLE public.sentido2_last_10 OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 25385)
+-- Name: estatisticas_sentido_2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.estatisticas_sentido_2 AS
+ SELECT sentido2_last_10."Contagem",
+    sentido2_last_10."Velocidade Media",
+    sentido2_last_10."Velocidade Maxima",
+    sentido2_last_10."Velocidade Minima",
+        CASE
+            WHEN (sentido2_last_10."Contagem" = 0) THEN 'pouco trânsito'::text
+            WHEN (sentido2_last_10."Velocidade Media" >= (50)::numeric) THEN 'pouco trânsito'::text
+            WHEN ((sentido2_last_10."Velocidade Media" < (50)::numeric) AND (sentido2_last_10."Velocidade Media" >= (30)::numeric)) THEN 'trânsito moderado'::text
+            WHEN ((sentido2_last_10."Velocidade Media" < (30)::numeric) AND (sentido2_last_10."Velocidade Media" >= (10)::numeric)) THEN 'muito trânsito'::text
+            WHEN ((sentido2_last_10."Velocidade Media" < (10)::numeric) AND (sentido2_last_10."Velocidade Media" >= (0)::numeric)) THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS "Estado do Trânsito"
+   FROM public.sentido2_last_10
+  GROUP BY sentido2_last_10."Velocidade Media", sentido2_last_10."Contagem", sentido2_last_10."Velocidade Maxima", sentido2_last_10."Velocidade Minima"
+  WITH NO DATA;
+
+
+ALTER TABLE public.estatisticas_sentido_2 OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 25393)
+-- Name: historico_sentido_1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.historico_sentido_1 AS
+ SELECT dadosobjetos."timestamp" AS "Data Hora",
+    dadosobjetos.velocidade AS "Velocidade"
+   FROM public.dadosobjetos
+  WHERE ((dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '1'::text))
+  WITH NO DATA;
+
+
+ALTER TABLE public.historico_sentido_1 OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 25397)
+-- Name: historico_sentido_2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.historico_sentido_2 AS
+ SELECT dadosobjetos."timestamp" AS "Data Hora",
+    abs(dadosobjetos.velocidade) AS "Velocidade"
+   FROM public.dadosobjetos
+  WHERE ((dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND ((dadosobjetos.sentido)::text = '0'::text))
+  WITH NO DATA;
+
+
+ALTER TABLE public.historico_sentido_2 OWNER TO postgres;
 
 --
 -- TOC entry 196 (class 1259 OID 25281)
@@ -267,24 +239,48 @@ CREATE TABLE public.type_objeto (
 ALTER TABLE public.type_objeto OWNER TO postgres;
 
 --
+-- TOC entry 209 (class 1259 OID 25405)
+-- Name: velocidades_maxima_e_minima_sentido_1; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.velocidades_maxima_e_minima_sentido_1 AS
+ SELECT max(abs(historico_sentido_1."Velocidade")) AS "Velocidade Maxima",
+    min(abs(historico_sentido_1."Velocidade")) AS "Velocidade Minima"
+   FROM public.historico_sentido_1
+  WITH NO DATA;
+
+
+ALTER TABLE public.velocidades_maxima_e_minima_sentido_1 OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 25401)
+-- Name: velocidades_maxima_e_minima_sentido_2; Type: MATERIALIZED VIEW; Schema: public; Owner: postgres
+--
+
+CREATE MATERIALIZED VIEW public.velocidades_maxima_e_minima_sentido_2 AS
+ SELECT max(abs(historico_sentido_2."Velocidade")) AS "Velocidade Maxima",
+    min(abs(historico_sentido_2."Velocidade")) AS "Velocidade Minima"
+   FROM public.historico_sentido_2
+  WITH NO DATA;
+
+
+ALTER TABLE public.velocidades_maxima_e_minima_sentido_2 OWNER TO postgres;
+
+--
 -- TOC entry 3146 (class 0 OID 25325)
 -- Dependencies: 201
 -- Data for Name: dadosobjetos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_radar) FROM stdin;
-1	2019-02-10 08:17:00	-63	0	2	1
 2	2019-02-10 08:17:00	35	1	2	1
 3	2019-02-10 08:17:00	40	1	2	1
 4	2019-02-10 08:17:00	42	1	2	1
 5	2019-02-10 08:18:00	-69	0	2	1
-6	2019-02-10 08:18:00	63	1	2	1
 7	2019-02-10 08:18:00	66	1	2	1
 8	2019-02-10 08:18:00	-52	0	2	1
-9	2019-02-10 08:18:00	-56	0	2	1
 10	2019-02-10 08:19:00	-63	0	2	1
 11	2019-02-10 08:19:00	50	1	2	1
-12	2019-02-10 08:19:00	49	1	2	1
 13	2019-02-10 08:19:00	50	1	2	1
 14	2019-02-10 08:19:00	45	1	2	1
 15	2019-02-10 08:19:00	-38	0	2	1
@@ -2102,7 +2098,6 @@ COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_rada
 1827	2019-02-10 12:08:00	-50	0	2	1
 1828	2019-02-10 12:08:00	-58	0	2	1
 1829	2019-02-10 12:09:00	-54	0	2	1
-1830	2019-02-10 12:09:00	-55	0	2	1
 1831	2019-02-10 12:09:00	33	1	2	1
 1832	2019-02-10 12:09:00	-53	0	2	1
 1833	2019-02-10 12:09:00	34	1	4	1
@@ -2125,7 +2120,6 @@ COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_rada
 1850	2019-02-10 12:10:00	42	1	2	1
 1851	2019-02-10 12:10:00	39	1	2	1
 1852	2019-02-10 12:10:00	39	1	2	1
-1853	2019-02-10 12:10:00	-61	0	2	1
 1854	2019-02-10 12:10:00	40	1	2	1
 1855	2019-02-10 12:10:00	40	1	2	1
 1856	2019-02-10 12:10:00	37	1	3	1
@@ -2146,7 +2140,6 @@ COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_rada
 1871	2019-02-10 12:12:00	-64	0	2	1
 1872	2019-02-10 12:12:00	63	1	4	1
 1873	2019-02-10 12:12:00	-69	0	2	1
-1874	2019-02-10 12:13:00	-49	0	2	1
 1875	2019-02-10 12:13:00	-51	0	2	1
 1876	2019-02-10 12:13:00	58	1	2	1
 1877	2019-02-10 12:13:00	-62	0	2	1
@@ -2170,7 +2163,6 @@ COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_rada
 1895	2019-02-10 12:16:00	51	1	2	1
 1896	2019-02-10 12:16:00	52	1	2	1
 1897	2019-02-10 12:16:00	55	1	4	1
-1898	2019-02-10 12:16:00	51	1	2	1
 1899	2019-02-10 12:16:00	55	1	2	1
 1900	2019-02-10 12:16:00	57	1	4	1
 1901	2019-02-10 12:17:00	52	1	2	1
@@ -2180,6 +2172,14 @@ COPY public.dadosobjetos (id, "timestamp", velocidade, sentido, id_type, id_rada
 1905	2019-02-10 12:17:00	46	1	2	1
 1906	2019-02-10 12:17:00	57	1	4	1
 1907	2019-02-10 12:17:00	59	1	2	1
+6	2019-12-11 11:37:00	63	1	2	1
+9	2019-12-11 11:37:00	-56	0	2	1
+12	2019-12-11 11:37:00	49	1	2	1
+1830	2019-12-11 12:03:00	-55	0	2	1
+1853	2019-12-11 12:03:00	-61	0	2	1
+1874	2019-12-11 12:03:00	-49	0	2	1
+1898	2019-12-11 12:03:00	51	1	2	1
+1	2019-12-11 12:03:00	-63	0	2	1
 \.
 
 
@@ -2363,12 +2363,12 @@ REFRESH MATERIALIZED VIEW public.sentido1_last_10;
 
 
 --
--- TOC entry 3150 (class 0 OID 25377)
--- Dependencies: 205 3148 3157
--- Name: Estatisticas Sentido 1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+-- TOC entry 3155 (class 0 OID 33905)
+-- Dependencies: 210 3148 3157
+-- Name: estatisticas_sentido_1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
 --
 
-REFRESH MATERIALIZED VIEW public."Estatisticas Sentido 1";
+REFRESH MATERIALIZED VIEW public.estatisticas_sentido_1;
 
 
 --
@@ -2381,51 +2381,51 @@ REFRESH MATERIALIZED VIEW public.sentido2_last_10;
 
 
 --
--- TOC entry 3151 (class 0 OID 25385)
--- Dependencies: 206 3149 3157
--- Name: Estatisticas Sentido 2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+-- TOC entry 3150 (class 0 OID 25385)
+-- Dependencies: 205 3149 3157
+-- Name: estatisticas_sentido_2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
 --
 
-REFRESH MATERIALIZED VIEW public."Estatisticas Sentido 2";
+REFRESH MATERIALIZED VIEW public.estatisticas_sentido_2;
 
 
 --
--- TOC entry 3152 (class 0 OID 25393)
+-- TOC entry 3151 (class 0 OID 25393)
+-- Dependencies: 206 3157
+-- Name: historico_sentido_1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+--
+
+REFRESH MATERIALIZED VIEW public.historico_sentido_1;
+
+
+--
+-- TOC entry 3152 (class 0 OID 25397)
 -- Dependencies: 207 3157
--- Name: Histórico Sentido 1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+-- Name: historico_sentido_2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
 --
 
-REFRESH MATERIALIZED VIEW public."Histórico Sentido 1";
-
-
---
--- TOC entry 3153 (class 0 OID 25397)
--- Dependencies: 208 3157
--- Name: Histórico Sentido 2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
---
-
-REFRESH MATERIALIZED VIEW public."Histórico Sentido 2";
+REFRESH MATERIALIZED VIEW public.historico_sentido_2;
 
 
 --
--- TOC entry 3155 (class 0 OID 25405)
--- Dependencies: 210 3152 3157
--- Name: Velocidades Maxima e Minima Sentido 1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+-- TOC entry 3154 (class 0 OID 25405)
+-- Dependencies: 209 3151 3157
+-- Name: velocidades_maxima_e_minima_sentido_1; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
 --
 
-REFRESH MATERIALIZED VIEW public."Velocidades Maxima e Minima Sentido 1";
+REFRESH MATERIALIZED VIEW public.velocidades_maxima_e_minima_sentido_1;
 
 
 --
--- TOC entry 3154 (class 0 OID 25401)
--- Dependencies: 209 3153 3157
--- Name: Velocidades Maxima e Minima Sentido 2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
+-- TOC entry 3153 (class 0 OID 25401)
+-- Dependencies: 208 3152 3157
+-- Name: velocidades_maxima_e_minima_sentido_2; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: postgres
 --
 
-REFRESH MATERIALIZED VIEW public."Velocidades Maxima e Minima Sentido 2";
+REFRESH MATERIALIZED VIEW public.velocidades_maxima_e_minima_sentido_2;
 
 
--- Completed on 2019-12-09 15:30:56 WET
+-- Completed on 2019-12-11 12:07:54 WET
 
 --
 -- PostgreSQL database dump complete
