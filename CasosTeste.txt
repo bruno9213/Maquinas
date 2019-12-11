@@ -1,0 +1,51 @@
+Casos de teste: 
+
+classe Estatisticas:
+	são classes de dados e views na BD
+		métodos da classe Estatísticas:	
+			-são feitos na base de dados, com views
+
+classe Server:
+		-enviarDadosEntidades()				
+		ou seja mostrar o histórico das velocidades
+		mostrar a velocidade max e min total
+	Teste:
+	método tem de conseguir tirar os dados da views da bd e mostrar.
+	Ou seja, cria-se uma view dummy? para mostrar os valores?
+	
+		-enviarDadosClientes()
+		mostrar os dados de 10 em 10 min, contagem, velocidade media, velocidade max, min e estado
+	Teste:
+	método tem de conseguir tirar os dados da views da bd e mostrar.
+	Ou seja, cria-se uma view dummy? para mostrar os valores?
+
+		-enviarQueriesBD()
+		o administrador pode inserir valores na BD
+	Teste:
+	método manda queries para a BD
+	como se testa sem a BD??
+		
+		-validarLogin()
+		as entidades fazem login, vai verificar se login se encontra nas tabelas
+	Teste:
+	método compara login recebido com o que estão nas tabelas
+	cria-se tabela dummy??
+
+classe Entidade:
+		-autenticar()
+		entidades colocam o seu username e pass e tem de fazer o login
+
+	Teste:
+	método insere login, vai validar e se der bem deixa-o ver outras coisas
+	como testar??
+
+classe Administrador:
+	herda de entidade
+	
+		-registaEntidades()
+		-registaRadar()
+		-registaEstadoTransito()
+			insere estes dados na base de dados
+
+	Teste:
+	métodos fazem inserção de valores na bd, como é que se testa sem bd??

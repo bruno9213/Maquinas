@@ -1,0 +1,19 @@
+Coisas que falta fazer.
+
+- UI do cliente pra mostrar os dados
+
+- método de refrescar o histórico e velocidade max, min
+
+- método de mostrar o histórico e velocidade max e min
+
+- método de autenticar
+
+- método de registar na BD, o estado de trânsito, as entidades e radar
+
+- classe do radar que vai buscar à bd os dados do radar
+
+- UI do login
+
+- UI das entidades
+
+- UI do admin
