@@ -1,4 +1,6 @@
-Coisas que falta fazer.
+|||||||||||||||||||| Coisas que falta fazer |||||||||||||||||||||
+
+*** METODOS ***
 
 - método de refrescar o histórico e velocidade max, min
 
@@ -9,6 +11,16 @@ Coisas que falta fazer.
 - método de registar na BD, o estado de trânsito, as entidades e radar
 
 - método de mostrar os dados do radar 
+
+
+*** DESIGN UI ***
+
+- Estado da Distribuição das Tarefas --> A aguardar decisão unanima... (ver PDF no GIT)
+
+- Defenir Fluxo entre as UI --> Por defenir
+
+
+*** Conteudos das UI ***
 
 - UI do cliente: mostra dados do radar, mostar as views EstatisticasSentido 1 e 2
 
