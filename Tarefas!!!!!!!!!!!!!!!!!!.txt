@@ -1,0 +1,31 @@
+|||||||||||||||||||| Coisas que falta fazer |||||||||||||||||||||
+
+*** METODOS ***
+
+- método de refrescar o histórico e velocidade max, min
+
+- método de mostrar o histórico e velocidade max e min
+
+- método de autenticar e validar logins
+
+- método de registar na BD, o estado de trânsito, as entidades e radar
+
+- método de mostrar os dados do radar 
+
+
+*** DESIGN UI ***
+
+- Estado da Distribuição das Tarefas --> A aguardar decisão unanima... (ver PDF no GIT)
+
+- Defenir Fluxo entre as UI --> Por defenir
+
+
+*** Conteudos das UI ***
+
+- UI do cliente: mostra dados do radar, mostar as views EstatisticasSentido 1 e 2
+
+- UI do login: tem que dar pra inserir username e pass
+
+- UI das entidades: mostra igual à do cliente mais um botão pra ir ver o histórico
+
+- UI do admin: mostra igual à das entidades mais botões para fazer registo de entidades, de radares e de estado do trânsito
