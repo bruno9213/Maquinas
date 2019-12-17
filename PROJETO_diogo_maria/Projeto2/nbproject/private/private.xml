@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO/Projeto2/src/threading/Server.java</file>
-            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO/Projeto2/src/threading/JDBCConnect.java</file>
-            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO/Projeto2/src/threading/Client.java</file>
+            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO_diogo_maria/Projeto2/src/threading/Client.java</file>
+            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO_diogo_maria/Projeto2/src/threading/AdminCriar.java</file>
+            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO_diogo_maria/Projeto2/src/threading/Server.java</file>
+            <file>file:/home/ddo/Documents/GitHub/Maquinas/PROJETO_diogo_maria/Projeto2/src/threading/Admin.java</file>
         </group>
     </open-files>
 </project-private>
