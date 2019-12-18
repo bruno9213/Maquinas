@@ -87,7 +87,7 @@ public class Server extends Thread {
                 dados[6] = rs1.getString("Velocidade Media");
                 dados[7] = rs1.getString("Velocidade Maxima");
                 dados[8] = rs1.getString("Velocidade Maxima");
-                dados[9] = rs1.getString("Estado do Transito");
+                dados[9] = rs1.getString(5);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
