@@ -53,7 +53,7 @@ public class Projeto3_0 {
         return letters.stream().collect(Collectors.joining());
     }
 
-
+}
     /**
      * @param args the command line arguments
      */

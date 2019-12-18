@@ -8,7 +8,7 @@
 
 - método de autenticar e validar logins
 
-- método de registar na BD, o estado de trânsito, as entidades e radar
+- método de registar na BD as entidades 
 
 - método de mostrar os dados do radar 
 
