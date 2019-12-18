@@ -14,7 +14,7 @@ public class Client extends Thread {
             Socket conexao = new Socket("127.0.0.1", 8090);
             
             Thread t;
-            JFrame_Cliente j = new JFrame_Cliente();
+            JFrame_Entidade j = new JFrame_Entidade();
             t = new Thread(new Client(conexao, j));
                      
             t.start();
@@ -27,9 +27,9 @@ public class Client extends Thread {
         }
     }
     private Socket conexao;
-    private JFrame_Cliente j;
+    private JFrame_Entidade j;
 
-    public Client(Socket s, JFrame_Cliente j) {
+    public Client(Socket s, JFrame_Entidade j) {
         conexao = s;
         this.j = j;
     }
