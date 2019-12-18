@@ -13,7 +13,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     private int sentidoSelecionado = 1;
     private String[] str;
-    
+    //gfdthyfjygf
     /**
      * Creates new form JFrame_Cliente
      */

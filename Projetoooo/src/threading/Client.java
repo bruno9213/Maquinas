@@ -53,6 +53,7 @@ public class Client extends Thread {
             j.setDados(ar);
             for(int z=0; z<ar.length; z++){             
                 System.out.println(ar[z]);
+                //fdjlngidrhntiodhuinfutuibotfbfbijfbuftfib
             }
             
         } catch (IOException e) {

@@ -66,6 +66,7 @@ public class Server extends Thread {
         
         JDBCConnect c = new JDBCConnect();
         ResultSet rs1 = c.getQueryResult("select * from estatisticas_sentido_1");
+        //gfdhbtfhytfjuykutkuytjuy
         
         try {
             while (rs1.next()) {

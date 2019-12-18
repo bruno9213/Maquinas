@@ -22,6 +22,7 @@ public class JDBCConnect {
     private final String url = "jdbc:postgresql://localhost/bdptda";
     private final String user = "postgres";
     private final String password = "bruno9213";
+    //gtfdhoktjkfytf
 
     public JDBCConnect(){
         
