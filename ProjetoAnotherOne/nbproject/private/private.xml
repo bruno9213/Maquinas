@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/Client.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/Admin.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/Server.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/JFrame_Historico.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/AdminCriar.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/Historico.java</file>
+            <file>file:/home/bruno/Documentos/GITFILES/Maquinas/ProjetoAnotherOne/src/threading/JFrame_Cliente.java</file>
+        </group>
     </open-files>
 </project-private>

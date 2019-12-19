@@ -63,3 +63,47 @@ from "Histórico Sentido 1"
 
 
 REFRESH MATERIALIZED VIEW <NAME VIEW>;
+
+
+--FAZER DE TUDO
+
+create materialized view "sentido1_all" as
+SELECT count(*) as "contagem", avg(velocidade) as "velocidade_media", max(velocidade) as "maxima", min(velocidade) as "minima"
+FROM dadosobjetos
+WHERE dadosobjetos.timestamp >= now()::timestamp - INTERVAL '365 days'
+and id_type in(2,3,4) and sentido='1'
+;
+create materialized view "sentido2_all" as
+SELECT count(*) as "contagem", avg(velocidade) as "velocidade_media", max(velocidade) as "maxima", min(velocidade) as "minima"
+FROM dadosobjetos
+WHERE dadosobjetos.timestamp >= now()::timestamp - INTERVAL '365 days'
+and id_type in(2,3,4) and sentido='0'
+;
+create materialized view "sentido1" as
+select *,
+	CASE when "contagem"=0 then 'pouco trânsito'
+		 WHEN "velocidade_media">=50       THEN 'pouco trânsito'
+		 WHEN "velocidade_media"<50 and "velocidade_media">=30 THEN 'trânsito moderado'
+		 when "velocidade_media"<30 and "velocidade_media">=10 then 'muito trânsito'
+		 when "velocidade_media"<10 and "velocidade_media">=0 then 'congestionamento extremo'
+		 ELSE 'erro'
+	END AS "estado"
+	from sentido1_all
+	group by "velocidade_media", "contagem", "maxima", "minima"
+;
+create materialized view "sentido2" as
+select *,
+	CASE when "contagem"=0 then 'pouco trânsito'
+		 WHEN "velocidade_media">=50       THEN 'pouco trânsito'
+		 WHEN "velocidade_media"<50 and "velocidade_media">=30 THEN 'trânsito moderado'
+		 when "velocidade_media"<30 and "velocidade_media">=10 then 'muito trânsito'
+		 when "velocidade_media"<10 and "velocidade_media">=0 then 'congestionamento extremo'
+		 ELSE 'erro'
+	END AS "estado"
+	from sentido2_all
+	group by "velocidade_media", "contagem", "maxima", "minima"
+;
+
+
+
+
