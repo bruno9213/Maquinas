@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JFrame_Historico extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form Entidades
      */
@@ -21,15 +22,26 @@ public class JFrame_Historico extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void setHistorico(ArrayList<Historico> ar){
-        DefaultTableModel model=new DefaultTableModel();
+    public void setHistorico(Historico ar) {
         
-        for(Historico h : ar){
-            model.addRow(new Object[]{h.getData(),h.getVel()});
-        }
-        jTable1.setModel(model);
+//        ArrayList<String> dados = new ArrayList<String>();
+//        
+//        for (String i : ar.getData()) {
+//            dados.add(i);
+//        }
+//        
+//        for (String i : dados) {
+//            System.out.println("--> "+i);
+//        }
+////
+//        DefaultTableModel model=new DefaultTableModel();
+//        
+//        for(Historico h : ar){
+//            model.addRow(new Object[]{h.getData(),h.getVel()});
+//        }
+//        jTable1.setModel(model);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

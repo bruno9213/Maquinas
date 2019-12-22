@@ -15,7 +15,6 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     private int sentidoSelecionado = 1;
     private String[] str;
-    private ArrayList<Historico> h;
     
     /**
      * Creates new form JFrame_Entidade
@@ -42,8 +41,10 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel24.setText(str[4]);     
     }
     
-    public void setHistorico(ArrayList<Historico> h){
-        this.h = h;
+    public void setHistorico(Historico hist){
+        for(String sss : hist.getData()){
+            
+        }
     }
 
     /**
@@ -354,8 +355,9 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         //HISTORICO
         JFrame_Historico jfh = new JFrame_Historico();
+        
+//        jfh.setHistorico(hist);
         jfh.setVisible(true);
-        jfh.setHistorico(h);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

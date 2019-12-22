@@ -52,6 +52,10 @@ public class Client extends Thread {
     }
 
     public void run() {
+        
+
+        //STATUS
+        
         try {
             System.out.println("here:" + admin + logado);
             //PrintStream cliente = new PrintStream(conexao.getOutputStream());
@@ -64,7 +68,6 @@ public class Client extends Thread {
                 dout.writeUTF("0");
             }
             System.out.println("here woo woo");
-
             dout.flush(); // send the message
             System.out.println("here message sent");
 
@@ -72,30 +75,40 @@ public class Client extends Thread {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        String[] ar = new String[12];
-        int i = 0;
-        Radar r;
+        
+        //DADOS RADAR CABEÇALHO  
+        
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-            r = (Radar) ois.readObject();
-            j.setRadar(r);
+            Radar r = (Radar) ois.readObject();
+            j.setRadar(r);      
         } catch (IOException ex) {
             System.out.println("IOException: " + ex);
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException: " + ex);
         }
 
-        ArrayList<Historico> h;
+        
+
+        
+//        /DADOS HISTORICO                                                       >>> NOT WORKING PROPERLY ATM <<< ||||||||  
+
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-            h = (ArrayList<Historico>) ois.readObject();
+            Historico h = (Historico) ois.readObject();
             j.setHistorico(h);
         } catch (IOException ex) {
             System.out.println("IOException: " + ex);
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException: " + ex);
         }
-            
+        
+
+
+        //DADOS RADAR SENTIDO 1 e 2 (manter em ultimo por causa do loop)
+        
+        String[] ar = new String[12];
+        int i = 0;
         try {
             BufferedReader entrada = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
             String linha;
@@ -108,13 +121,11 @@ public class Client extends Thread {
                 }
             }
             j.setDados(ar);
-
-//            for (int z = 0; z < ar.length; z++) {
-//                System.out.println(ar[z]);
-//            }
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
+        
+        //FIM DA THREAD
         done = true;
     }
 }

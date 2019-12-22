@@ -6,6 +6,7 @@
 package threading;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,18 +14,19 @@ import java.io.Serializable;
  */
 public class Historico implements Serializable{
     
-    private String data, vel;
+    private ArrayList<String> data;
+    private ArrayList<String> vel;
 
-    public Historico(String data, String vel) {
+    public Historico(ArrayList<String> data, ArrayList<String> vel) {
         this.data = data;
         this.vel = vel;
     }
 
-    public String getData() {
+    public ArrayList<String> getData() {
         return data;
     }
 
-    public String getVel() {
+    public ArrayList<String> getVel() {
         return vel;
     }
 
