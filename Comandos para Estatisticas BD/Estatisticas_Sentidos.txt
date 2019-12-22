@@ -68,7 +68,7 @@ REFRESH MATERIALIZED VIEW <NAME VIEW>;
 --FAZER DE TUDO
 
 create materialized view "sentido1_all" as
-SELECT count(*) as "contagem", avg(velocidade) as "velocidade_media", max(velocidade) as "maxima", min(velocidade) as "minima"
+SELECT count(*) as "contagem", avg(velocidade) as "velocidade_media", max(abs(velocidade)) as "maxima", min(abs(velocidade)) as "minima"
 FROM dadosobjetos
 WHERE dadosobjetos.timestamp >= now()::timestamp - INTERVAL '365 days'
 and id_type in(2,3,4) and sentido='1'
