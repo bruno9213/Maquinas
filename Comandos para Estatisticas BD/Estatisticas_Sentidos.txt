@@ -4,7 +4,7 @@ create materialized view "sentido1_last_10" as
 SELECT count(*) as "Contagem", avg(velocidade) as "Velocidade Media", max(velocidade) as "Velocidade Maxima", min(velocidade) as "Velocidade Minima"
 FROM dadosobjetos
 WHERE dadosobjetos.timestamp >= now()::timestamp - INTERVAL '10 minutes'
-and id_type in(2,3,4) and sentido='1
+and id_type in(2,3,4) and sentido='1'
 ;
 create materialized view "sentido2_last_10" as
 SELECT count(*) as "Contagem", abs(avg(velocidade)) as "Velocidade Media", max(abs(velocidade)) as "Velocidade Maxima", min(abs(velocidade)) as "Velocidade Minima"
