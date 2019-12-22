@@ -40,19 +40,34 @@ public class Client extends Thread {
     }
 
     public void sendStatus(PrintStream cliente) throws IOException {
-        
-        if(admin == true) cliente.println(2);
-        else if (logado == true) cliente.println(1);
-        else cliente.println(0);
+        System.out.println("here:" + admin + logado);
+
+        if (admin == true) {
+            cliente.println(2);
+        } else if (logado == true) {
+            cliente.println(1);
+        } else {
+            cliente.println(0);
+        }
     }
-    
+
     public void run() {
-        
-        
         try {
-            PrintStream cliente_status = new PrintStream(conexao.getOutputStream());
-            sendStatus(cliente_status);
-            
+            System.out.println("here:" + admin + logado);
+            //PrintStream cliente = new PrintStream(conexao.getOutputStream());
+            DataOutputStream dout = new DataOutputStream(conexao.getOutputStream());
+            if (admin == true) {
+                dout.writeUTF("2");
+            } else if (logado == true) {
+                dout.writeUTF("1");
+            } else {
+                dout.writeUTF("0");
+            }
+            System.out.println("here woo woo");
+
+            dout.flush(); // send the message
+            System.out.println("here message sent");
+
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,7 +84,7 @@ public class Client extends Thread {
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException: " + ex);
         }
-        
+
         ArrayList<Historico> h;
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
@@ -94,10 +109,9 @@ public class Client extends Thread {
             }
             j.setDados(ar);
 
-            for (int z = 0; z < ar.length; z++) {
-                System.out.println(ar[z]);
-            }
-
+//            for (int z = 0; z < ar.length; z++) {
+//                System.out.println(ar[z]);
+//            }
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
