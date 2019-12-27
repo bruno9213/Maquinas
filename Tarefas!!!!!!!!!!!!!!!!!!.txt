@@ -15,7 +15,7 @@
 
 *** DESIGN UI ***
 
-- Estado da Distribuição das Tarefas --> A aguardar decisão unanima... (ver PDF no GIT)
+- Estado da Distribuição das Tarefas --> Ver no PDF
 
 - Defenir Fluxo entre as UI --> Por defenir
 

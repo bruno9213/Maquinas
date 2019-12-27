@@ -86,7 +86,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Historico");
+        setTitle("Historico Velocidades");
         setResizable(false);
 
         jButton3.setText("Mudar Sentido");
@@ -123,7 +123,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
 
         jLabel25.setText("Sentido:");
 
-        jLabel2.setText("Sentido: 1");
+        jLabel2.setText("Velocidades Sentido: 1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,7 +177,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
         } else if (sentido == 2) {
             sentido = 1;
         }
-        jLabel2.setText("Sentido: " + sentido);
+        jLabel2.setText("Velocidades Sentido: " + sentido);
         updateTable(sentido);
     }//GEN-LAST:event_jButton3ActionPerformed
 
