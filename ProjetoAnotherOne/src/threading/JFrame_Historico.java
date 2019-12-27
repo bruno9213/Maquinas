@@ -5,7 +5,9 @@
  */
 package threading;
 
+import java.awt.List;
 import java.util.ArrayList;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,32 +16,29 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JFrame_Historico extends javax.swing.JFrame {
 
-    
     /**
      * Creates new form Entidades
+     *
+     * @param data
+     * @param vel
      */
     public JFrame_Historico() {
         initComponents();
     }
 
-    public void setHistorico(Historico ar) {
+    public void setValues(ArrayList<String> data, ArrayList<String> vel) {
+
+        String[] dataS = data.toArray(String[]::new);
+        String[] velS = vel.toArray(String[]::new);
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         
-//        ArrayList<String> dados = new ArrayList<String>();
-//        
-//        for (String i : ar.getData()) {
-//            dados.add(i);
-//        }
-//        
-//        for (String i : dados) {
-//            System.out.println("--> "+i);
-//        }
-////
-//        DefaultTableModel model=new DefaultTableModel();
-//        
-//        for(Historico h : ar){
-//            model.addRow(new Object[]{h.getData(),h.getVel()});
-//        }
-//        jTable1.setModel(model);
+        for (int i = 0; i < dataS.length; i++) {
+            if (dataS[i] != null || dataS[i].equals("")) { //just in case
+                String[] item = {dataS[i], velS[i]};
+                model.addRow(item);
+            }
+        }
+        jTable2.setModel(model);
     }
 
     /**
@@ -56,10 +55,10 @@ public class JFrame_Historico extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jTextField1.setText("jTextField1");
 
@@ -84,19 +83,6 @@ public class JFrame_Historico extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {1, 2},
-                {3, 4},
-                {5, 6l},
-                {7, null}
-            },
-            new String [] {
-                "Data/Hora", "Velocidade"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
-
         jLabel1.setText("Histórico");
 
         jButton4.setText("Back");
@@ -105,6 +91,25 @@ public class JFrame_Historico extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Data", "Velocidade"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable2);
+        jTable2.getAccessibleContext().setAccessibleParent(jScrollPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,12 +124,12 @@ public class JFrame_Historico extends javax.swing.JFrame {
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,9 +143,9 @@ public class JFrame_Historico extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,8 +206,8 @@ public class JFrame_Historico extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

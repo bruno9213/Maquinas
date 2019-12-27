@@ -50,6 +50,9 @@ public class Client extends Thread {
             cliente.println(0);
         }
     }
+    
+    
+    
 
     public void run() {
         
@@ -80,8 +83,8 @@ public class Client extends Thread {
         
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-            Radar r = (Radar) ois.readObject();
-            j.setRadar(r);      
+            Dados r = (Dados) ois.readObject();
+            j.setRadar(r);
         } catch (IOException ex) {
             System.out.println("IOException: " + ex);
         } catch (ClassNotFoundException ex) {
@@ -92,17 +95,17 @@ public class Client extends Thread {
 
         
 //        /DADOS HISTORICO                                                       >>> NOT WORKING PROPERLY ATM <<< ||||||||  
-
-        try {
-            ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-            Historico h = (Historico) ois.readObject();
-            j.setHistorico(h);
-        } catch (IOException ex) {
-            System.out.println("IOException: " + ex);
-        } catch (ClassNotFoundException ex) {
-            System.out.println("ClassNotFoundException: " + ex);
-        }
-        
+//
+//        try {
+//            ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
+//            Historico h = (Historico) ois.readObject();
+//            j.setHistorico(h);
+//        } catch (IOException ex) {
+//            System.out.println("IOException: " + ex);
+//        } catch (ClassNotFoundException ex) {
+//            System.out.println("ClassNotFoundException: " + ex);
+//        }
+//        
 
 
         //DADOS RADAR SENTIDO 1 e 2 (manter em ultimo por causa do loop)

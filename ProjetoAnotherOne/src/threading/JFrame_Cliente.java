@@ -15,6 +15,9 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     private int sentidoSelecionado = 1;
     private String[] str;
+    private ArrayList<String> data;
+    private ArrayList<String> vel;
+    
     
     /**
      * Creates new form JFrame_Entidade
@@ -23,11 +26,13 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void setRadar(Radar r){
+    public void setRadar(Dados r){
         jLabel8.setText(r.getName());
         jLabel9.setText(r.getLocal());
         jLabel10.setText(r.getN_vias());
         jLabel11.setText(r.getN_sent());
+        data = r.getData();
+        vel = r.getVel();
     }
     
     public void setDados(String[] str){
@@ -41,11 +46,6 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel24.setText(str[4]);     
     }
     
-    public void setHistorico(Historico hist){
-        for(String sss : hist.getData()){
-            
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -161,23 +161,23 @@ public class JFrame_Cliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel1))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(jLabel12))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
                     .addComponent(jLabel22))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(jLabel23))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(jLabel24))
-                .addContainerGap())
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -313,9 +313,9 @@ public class JFrame_Cliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jLabel25))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -355,8 +355,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         //HISTORICO
         JFrame_Historico jfh = new JFrame_Historico();
-        
-//        jfh.setHistorico(hist);
+        jfh.setValues(data, vel);
         jfh.setVisible(true);
         
     }//GEN-LAST:event_jButton3ActionPerformed

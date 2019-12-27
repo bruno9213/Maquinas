@@ -59,10 +59,10 @@ public class Server extends Thread {
             boolean id = true;
             while (id == true) {
                 sendEstatisticasCliente(cliente);
-                if (cliente_dados.equals("1") || cliente_dados.equals("2")) {
-                    sendHistorico(cliente);
-                    
-                }
+//                if (cliente_dados.equals("1") || cliente_dados.equals("2")) {
+//                    sendHistorico(cliente);
+//                    
+//                }
                 id = false;
             }
             conexao.close();
@@ -90,14 +90,42 @@ public class Server extends Thread {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         //criacao objeto radar
-        Radar r = new Radar(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
-        //enviar radar
+        //Radar r = new Radar(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
+        Dados allData = new Dados();
+        allData.setRadarData(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
+            
+        //historico     
+        ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
+        
+        ArrayList<String> stha = new ArrayList<>();
+        ArrayList<String> sthb = new ArrayList<>();
+        
+        System.out.println("here3");
+        try {
+            while (rs1.next()) {
+                stha.add(rs1.getString(1));
+                sthb.add(rs1.getString(2));
+                
+                //dados_historico1[1] = rs1.getString(2);
+                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        allData.setData(stha);
+        allData.setVel(sthb);
+        
+        //WriteObject
         ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
         oos.flush();
-        oos.writeObject(r);
+        oos.writeObject(allData);
+        
+        //sentidos
 
 //      ResultSet rs1 = c.getQueryResult("select * from estatisticas_sentido_1"); //para 10 em 10 min
-        ResultSet rs1 = c.getQueryResult("select * from sentido1");
+        rs1 = c.getQueryResult("select * from sentido1");
         try {
             while (rs1.next()) {
                 dados[0] = rs1.getString(1);
@@ -127,38 +155,40 @@ public class Server extends Thread {
         for (int i = 0; i < dados.length; i++) { //envia dados 
             cliente.println(dados[i]);
         }
+        
+       
 
     }
-
-    public void sendHistorico(PrintStream cliente) throws IOException {
-        JDBCConnect c = new JDBCConnect();
-        ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
-        
-        ArrayList<String> stha = new ArrayList<>();
-        ArrayList<String> sthb = new ArrayList<>();
-        
-        System.out.println("here3");
-        try {
-            while (rs1.next()) {
-                stha.add(rs1.getString(1));
-                sthb.add(rs1.getString(2));
-                
-                //dados_historico1[1] = rs1.getString(2);
-                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
-                
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Historico h = new Historico(stha,sthb);
-
-        System.out.println(h.getData()+" \n"+h.getVel()); //works
-        
-        
-        ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
-        oos.flush();
-        oos.writeObject(h);
-
-    }
+//
+//    public void sendHistorico(PrintStream cliente) throws IOException {
+//        JDBCConnect c = new JDBCConnect();
+//        ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
+//        
+//        ArrayList<String> stha = new ArrayList<>();
+//        ArrayList<String> sthb = new ArrayList<>();
+//        
+//        System.out.println("here3");
+//        try {
+//            while (rs1.next()) {
+//                stha.add(rs1.getString(1));
+//                sthb.add(rs1.getString(2));
+//                
+//                //dados_historico1[1] = rs1.getString(2);
+//                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
+//                
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        Historico h = new Historico(stha,sthb);
+//
+//        System.out.println(h.getData()+" \n"+h.getVel()); //works
+//        
+//        
+//        ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
+//        oos.flush();
+//        oos.writeObject(h);
+//
+//    }
 }
