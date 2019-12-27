@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class Dados implements Serializable{
     
     private String name, local,id, n_vias, n_sent;
-    private ArrayList<String> data;
-    private ArrayList<String> vel;
+    private ArrayList<String> data, data2;
+    private ArrayList<String> vel, vel2;
     
     //Historico
     
@@ -27,6 +27,14 @@ public class Dados implements Serializable{
     public ArrayList<String> getVel() {
         return vel;
     }
+    
+    public ArrayList<String> getData2() {
+        return data2;
+    }
+
+    public ArrayList<String> getVel2() {
+        return vel2;
+    }
 
     public void setData(ArrayList<String> data) {
         this.data = data;
@@ -34,6 +42,14 @@ public class Dados implements Serializable{
       
     public void setVel(ArrayList<String> vel) {
         this.vel = vel;
+    }
+    
+    public void setData2(ArrayList<String> data2) {
+        this.data2 = data2;
+    }
+      
+    public void setVel2(ArrayList<String> vel2) {
+        this.vel2 = vel2;
     }
     
     //Radar

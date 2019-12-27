@@ -74,7 +74,6 @@ public class Server extends Thread {
 
     public void sendEstatisticasCliente(PrintStream cliente) throws IOException {
         String[] dados = new String[10];
-        System.out.println("heeere");
         JDBCConnect c = new JDBCConnect(); //conexao bd
         ResultSet rs = c.getQueryResult("select * from radar"); //query da bd
         String[] dados_radar = new String[5];
@@ -89,18 +88,16 @@ public class Server extends Thread {
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //criacao objeto radar
-        //Radar r = new Radar(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
+        //criacao objeto Dados
         Dados allData = new Dados();
         allData.setRadarData(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
             
-        //historico     
+        //historico sentido 1    
         ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
         
         ArrayList<String> stha = new ArrayList<>();
         ArrayList<String> sthb = new ArrayList<>();
         
-        System.out.println("here3");
         try {
             while (rs1.next()) {
                 stha.add(rs1.getString(1));
@@ -117,14 +114,35 @@ public class Server extends Thread {
         allData.setData(stha);
         allData.setVel(sthb);
         
+        
+        //historico sentido 2   
+        rs1 = c.getQueryResult("select * from historico_sentido_2");
+        
+        ArrayList<String> stha2 = new ArrayList<>();
+        ArrayList<String> sthb2 = new ArrayList<>();
+        
+        try {
+            while (rs1.next()) {
+                stha2.add(rs1.getString(1));
+                sthb2.add(rs1.getString(2));
+                
+                //dados_historico1[1] = rs1.getString(2);
+                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        allData.setData2(stha2);
+        allData.setVel2(sthb2);
+        
         //WriteObject
         ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
         oos.flush();
         oos.writeObject(allData);
         
         //sentidos
-
-//      ResultSet rs1 = c.getQueryResult("select * from estatisticas_sentido_1"); //para 10 em 10 min
         rs1 = c.getQueryResult("select * from sentido1");
         try {
             while (rs1.next()) {
@@ -138,7 +156,6 @@ public class Server extends Thread {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-//      rs1 = c.getQueryResult("select * from estatisticas_sentido_2"); //para 10 em 10 min
         rs1 = c.getQueryResult("select * from sentido2");
         try {
             while (rs1.next()) {
@@ -156,39 +173,6 @@ public class Server extends Thread {
             cliente.println(dados[i]);
         }
         
-       
 
     }
-//
-//    public void sendHistorico(PrintStream cliente) throws IOException {
-//        JDBCConnect c = new JDBCConnect();
-//        ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
-//        
-//        ArrayList<String> stha = new ArrayList<>();
-//        ArrayList<String> sthb = new ArrayList<>();
-//        
-//        System.out.println("here3");
-//        try {
-//            while (rs1.next()) {
-//                stha.add(rs1.getString(1));
-//                sthb.add(rs1.getString(2));
-//                
-//                //dados_historico1[1] = rs1.getString(2);
-//                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
-//                
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        Historico h = new Historico(stha,sthb);
-//
-//        System.out.println(h.getData()+" \n"+h.getVel()); //works
-//        
-//        
-//        ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
-//        oos.flush();
-//        oos.writeObject(h);
-//
-//    }
 }

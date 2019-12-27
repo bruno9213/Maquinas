@@ -5,6 +5,8 @@
  */
 package threading;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 /**
@@ -15,8 +17,8 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     private int sentidoSelecionado = 1;
     private String[] str;
-    private ArrayList<String> data;
-    private ArrayList<String> vel;
+    private ArrayList<String> data, data2;
+    private ArrayList<String> vel, vel2;
     
     
     /**
@@ -26,16 +28,18 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void setRadar(Dados r){
+    public void setAllData(Dados r){
         jLabel8.setText(r.getName());
         jLabel9.setText(r.getLocal());
         jLabel10.setText(r.getN_vias());
         jLabel11.setText(r.getN_sent());
         data = r.getData();
         vel = r.getVel();
+        data2 = r.getData2();
+        vel2 = r.getVel2();
     }
     
-    public void setDados(String[] str){
+    public void setDadosSentido(String[] str){
         this.str = str;
         jLabel25.setText("Sentido: 1");
         jLabel1.setText(str[0]);
@@ -46,6 +50,16 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel24.setText(str[4]);     
     }
     
+    
+    public int screenWidth(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+        return (int) screenSize.getWidth();
+    }
+    
+    public int screenHeight(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+        return (int) screenSize.getHeight();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,10 +96,10 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         jLabel19.setText("Velocidade Mínima");
 
@@ -94,6 +108,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel21.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Dados Radar");
         setResizable(false);
 
         jButton1.setText("Login");
@@ -152,7 +167,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
                         .addComponent(jLabel14)
                         .addGap(86, 86, 86)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +192,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(jLabel24))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -255,13 +270,6 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
         jLabel13.setText("Dados do Trânsito nos últimos 10 minutos:");
 
-        jButton2.setText("Mudar Sentido");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jLabel25.setText("Sentido:");
 
         jButton3.setText("Histórico");
@@ -273,6 +281,13 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
         jButton4.setText("Entidades");
 
+        jButton5.setText("Mudar Sentido");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -280,21 +295,23 @@ public class JFrame_Cliente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton5))
+                                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jButton3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton1)))
+                            .addComponent(jLabel13))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -307,45 +324,19 @@ public class JFrame_Cliente extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jLabel13)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel25))
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        double vel;
-        if(sentidoSelecionado == 1){
-            sentidoSelecionado = 2;
-            jLabel25.setText("Sentido: 2");
-            jLabel1.setText(str[5]);
-            vel = Math.round(Double.parseDouble(str[6]));
-            jLabel12.setText(String.valueOf(vel));
-            jLabel22.setText(str[7]);
-            jLabel23.setText(str[8]);
-            jLabel24.setText(str[9]);
-            
-        }else if(sentidoSelecionado == 2){
-            sentidoSelecionado = 1;
-            jLabel25.setText("Sentido: 1");
-            jLabel1.setText(str[0]);
-            vel = Math.round(Double.parseDouble(str[1]));
-            jLabel12.setText(String.valueOf(vel));
-            jLabel22.setText(str[2]);
-            jLabel23.setText(str[3]);
-            jLabel24.setText(str[4]);
-        }
-
-// TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -355,10 +346,34 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         //HISTORICO
         JFrame_Historico jfh = new JFrame_Historico();
-        jfh.setValues(data, vel);
+        jfh.setValues(data, vel, data2, vel2);
+        jfh.setLocation((screenWidth()/2)-(jfh.getSize().width/2), (screenHeight()/2)-(jfh.getSize().height/2));
         jfh.setVisible(true);
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        double vel;
+        if(sentidoSelecionado == 1){
+            sentidoSelecionado = 2;
+            jLabel1.setText(str[5]);
+            vel = Math.round(Double.parseDouble(str[6]));
+            jLabel12.setText(String.valueOf(vel));
+            jLabel22.setText(str[7]);
+            jLabel23.setText(str[8]);
+            jLabel24.setText(str[9]);
+
+        }else if(sentidoSelecionado == 2){
+            sentidoSelecionado = 1;
+            jLabel1.setText(str[0]);
+            vel = Math.round(Double.parseDouble(str[1]));
+            jLabel12.setText(String.valueOf(vel));
+            jLabel22.setText(str[2]);
+            jLabel23.setText(str[3]);
+            jLabel24.setText(str[4]);
+        }
+        jLabel25.setText("Sentido: "+sentidoSelecionado);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,9 +418,9 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

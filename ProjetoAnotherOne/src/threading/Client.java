@@ -1,10 +1,9 @@
 package threading;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.*;
 import java.net.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,13 +13,10 @@ public class Client extends Thread {
 
     public static void main(String args[]) {
         try {
-
             Socket conexao = new Socket("127.0.0.1", 8090);
-
             Thread t;
             JFrame_Cliente j = new JFrame_Cliente();
             t = new Thread(new Client(conexao, j));
-
             t.start();
             j.setVisible(true);
 
@@ -39,6 +35,16 @@ public class Client extends Thread {
         admin = true;
     }
 
+    public int screenWidth(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+        return (int) screenSize.getWidth();
+    }
+    
+    public int screenHeight(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+        return (int) screenSize.getHeight();
+    }
+    
     public void sendStatus(PrintStream cliente) throws IOException {
         System.out.println("here:" + admin + logado);
 
@@ -51,14 +57,13 @@ public class Client extends Thread {
         }
     }
     
-    
-    
 
     public void run() {
         
-
-        //STATUS
+        //centrar a form
+        j.setLocation((screenWidth()/2)-(j.getSize().width/2), (screenHeight()/2)-(j.getSize().height/2));
         
+        //STATUS
         try {
             System.out.println("here:" + admin + logado);
             //PrintStream cliente = new PrintStream(conexao.getOutputStream());
@@ -70,46 +75,24 @@ public class Client extends Thread {
             } else {
                 dout.writeUTF("0");
             }
-            System.out.println("here woo woo");
             dout.flush(); // send the message
-            System.out.println("here message sent");
-
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         
-        //DADOS RADAR CABEÇALHO  
-        
+        //Ler todos os dados 
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
             Dados r = (Dados) ois.readObject();
-            j.setRadar(r);
+            j.setAllData(r);
         } catch (IOException ex) {
             System.out.println("IOException: " + ex);
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException: " + ex);
         }
 
-        
-
-        
-//        /DADOS HISTORICO                                                       >>> NOT WORKING PROPERLY ATM <<< ||||||||  
-//
-//        try {
-//            ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-//            Historico h = (Historico) ois.readObject();
-//            j.setHistorico(h);
-//        } catch (IOException ex) {
-//            System.out.println("IOException: " + ex);
-//        } catch (ClassNotFoundException ex) {
-//            System.out.println("ClassNotFoundException: " + ex);
-//        }
-//        
-
-
         //DADOS RADAR SENTIDO 1 e 2 (manter em ultimo por causa do loop)
-        
         String[] ar = new String[12];
         int i = 0;
         try {
@@ -123,7 +106,7 @@ public class Client extends Thread {
                     break;
                 }
             }
-            j.setDados(ar);
+            j.setDadosSentido(ar);
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
