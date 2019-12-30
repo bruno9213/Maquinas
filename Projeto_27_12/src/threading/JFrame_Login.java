@@ -158,13 +158,22 @@ public class JFrame_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            //
+//            String user = jTextField1.getText();
+//            char[] pass;
+//            pass = jPasswordField1.getPassword();
+            Socket conexao = new Socket("127.0.0.1", 8090);
+            Thread t;
+            JFrame_Cliente j = new JFrame_Cliente();
+            j.loginAdmin();
+            t = new Thread(new Client(conexao, j));
+            t.start();
+            j.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(JFrame_Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-            String user = jTextField1.getText();
-            char[] pass;
-            pass = jPasswordField1.getPassword();
-            JFrame_Cliente jj = new JFrame_Cliente();
-            jj.loginAdmin();
-            jj.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
