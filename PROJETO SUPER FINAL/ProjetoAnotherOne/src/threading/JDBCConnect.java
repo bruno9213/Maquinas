@@ -6,13 +6,6 @@
 package threading;
 
 
-
-import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,10 +14,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author bruno
- */
+
 public class JDBCConnect {
 
     private final String url = "jdbc:postgresql://localhost/bdptda";
@@ -82,10 +72,10 @@ public class JDBCConnect {
 
     }
     
-    public void insert_entidade(String user, String pass) {
+    public void insert_entidade(int id, String nome, String user,String mail, int id_type) {
         JDBCConnect app = new JDBCConnect();
         Connection conn = app.connect();
-        String inserir = "insert into login values('" + user + "','" + pass + "')";
+        String inserir = "insert into entidades values('" + id + "','" + nome + "','" + user + "','" + mail + "','" + id_type + "')";
         try {
             Statement stm2 = (Statement) conn.createStatement();
             stm2.executeQuery(inserir);
@@ -94,46 +84,30 @@ public class JDBCConnect {
 
     }
 
+    public void get_type() {
+        try {
+            JDBCConnect app = new JDBCConnect();
+            Connection conn = app.connect();
+            
+            String consulta = "select * from type_entidades";
+            Statement stm = (Statement) conn.createStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                System.out.println(id + "\t" + nome + "\t");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCConnect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public static void main(String[] args) {
+           JDBCConnect j= new JDBCConnect();
+           j.get_type();
+    }
 }
-//    public void passw {
-//    
-//    private final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
-//    private final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
-//    private static final String NUMBER = "0123456789";
-//    private static final String OTHER_CHAR = "!@#$%&*()_+-=[]?";
-//
-//    private final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER + OTHER_CHAR;
-//    // optional, make it more random
-//    private final String PASSWORD_ALLOW_BASE_SHUFFLE = shuffleString(PASSWORD_ALLOW_BASE);
-//    private final String PASSWORD_ALLOW = PASSWORD_ALLOW_BASE_SHUFFLE;
-//
-//    private SecureRandom random = new SecureRandom();
-//    
-//     public String generateRandomPassword(int length) {
-//        if (length < 1) throw new IllegalArgumentException();
-//
-//        StringBuilder sb = new StringBuilder(length);
-//        for (int i = 0; i < length; i++) {
-//
-//            int rndCharAt = random.nextInt(PASSWORD_ALLOW.length());
-//            char rndChar = PASSWORD_ALLOW.charAt(rndCharAt);
-//
-//
-//            sb.append(rndChar);
-//
-//        }
-//
-//        return sb.toString();
-//
-//    }
-//     
-//     public String shuffleString(String string) {
-//        List<String> letters = Arrays.asList(string.split(""));
-//        Collections.shuffle(letters);
-//        return letters.stream().collect(Collectors.joining());
-//    }
-//
-//}
 
 //
 //    public static void main(String[] args) throws SQLException {
