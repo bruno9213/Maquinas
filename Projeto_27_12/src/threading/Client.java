@@ -31,8 +31,17 @@ public class Client extends Thread {
     public Client(Socket s, JFrame_Cliente j) {
         conexao = s;
         this.j = j;
-        logado = true;
-        admin = true;
+        logado = false;
+        admin = false;
+    }
+    
+    public void login_ent(){
+        logado=true;
+    }
+    
+    public void login_admin(){
+        logado=true;
+        admin=true;
     }
 
     public int screenWidth(){
@@ -43,18 +52,6 @@ public class Client extends Thread {
     public int screenHeight(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
         return (int) screenSize.getHeight();
-    }
-    
-    public void sendStatus(PrintStream cliente) throws IOException {
-        System.out.println("here:" + admin + logado);
-
-        if (admin == true) {
-            cliente.println(2);
-        } else if (logado == true) {
-            cliente.println(1);
-        } else {
-            cliente.println(0);
-        }
     }
     
 

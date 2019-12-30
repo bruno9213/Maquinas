@@ -71,6 +71,19 @@ public class Server extends Thread {
         }
 
     }
+    
+    public void recieveLogin(){
+        try {
+            DataInputStream dis = new DataInputStream(conexao.getInputStream());
+            String user;
+            String pass;
+            user=dis.readUTF();
+            pass=dis.readUTF();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void sendEstatisticasCliente(PrintStream cliente) throws IOException {
         String[] dados = new String[10];
