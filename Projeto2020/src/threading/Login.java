@@ -21,19 +21,40 @@ public class Login {
 
         try {
             while (rs.next()) {
-                dataUser.add(rs.getString(1)+","+rs.getString(2));
+                dataUser.add(rs.getString(1) + "," + rs.getString(2));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        for(String tmp : dataUser){
-           if(tmp.equals(user+","+pass)){
+
+        for (String tmp : dataUser) {
+            if (tmp.equals(user + "," + pass)) {
                 return true;
             }
         }
 
         return false; //TODO
+    }
+
+    public boolean checkAdmin(String user) {
+        JDBCConnect c = new JDBCConnect();
+        ResultSet rs = c.getQueryResult("select user, type_entidadeid from entidades");
+        ArrayList<String> dataUser = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                dataUser.add(rs.getString(1) + "," + rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (String tmp : dataUser) {
+            if (tmp.equals(user + "," + "0")) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 
 }

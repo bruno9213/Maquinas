@@ -47,6 +47,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jButton3.setVisible(true);
         jButton1.setVisible(false);
         jButton6.setVisible(true);
+        jButton4.setVisible(false);
     }
 
     public void setAllData(Dados r) {

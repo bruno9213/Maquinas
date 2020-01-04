@@ -130,7 +130,7 @@ public class JFrame_Login extends javax.swing.JFrame {
                                 .addGap(24, 24, 24))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -176,15 +176,20 @@ public class JFrame_Login extends javax.swing.JFrame {
 
         Login l = new Login();
         String pwd = new String(jPasswordField1.getPassword());
-        System.out.println(l.autenticarUser(jTextField1.getText(), pwd));
+        String user= jTextField1.getText();
+        System.out.println(l.autenticarUser(user, pwd));
 
         try {
             Socket conexao = new Socket("127.0.0.1", 8090);
             Thread t;
 
-            if ((l.autenticarUser(jTextField1.getText(), pwd))==true) {
+            if ((l.autenticarUser(user, pwd))==true) {
                 JFrame_Cliente j = new JFrame_Cliente();
-                j.loginAdmin();
+                if(l.checkAdmin(user)==true){
+                    j.loginAdmin();
+                }else{
+                    j.loginEnt();
+                }  
                 t = new Thread(new Client(conexao, j));
                 t.start();
                 j.setVisible(true);
