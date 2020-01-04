@@ -38,23 +38,24 @@ public class Login {
 
     public boolean checkAdmin(String user) {
         JDBCConnect c = new JDBCConnect();
-        ResultSet rs = c.getQueryResult("select user, type_entidadeid from entidades");
+        ResultSet rs = c.getQueryResult("select * from entidades");
         ArrayList<String> dataUser = new ArrayList<>();
         try {
             while (rs.next()) {
-                dataUser.add(rs.getString(1) + "," + rs.getString(2));
+                dataUser.add(rs.getString(3) + "," + rs.getString(5));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+        boolean ok = false;
         for (String tmp : dataUser) {
+            System.out.println(tmp);
             if (tmp.equals(user + "," + "0")) {
-                return true;
-            }else{
-                return false;
+                ok = true;
+                System.out.println("entrouuuu");
             }
         }
-        return false;
+        return ok;
     }
 
 }

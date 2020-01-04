@@ -189,7 +189,7 @@ public class JFrame_Login extends javax.swing.JFrame {
                     j.loginAdmin();
                 }else{
                     j.loginEnt();
-                }  
+                }
                 t = new Thread(new Client(conexao, j));
                 t.start();
                 j.setVisible(true);
