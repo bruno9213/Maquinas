@@ -1,0 +1,42 @@
+Casos de teste: 
+
+	-sendEstatisticas(conexão cliente)
+		Este método vai mostrar as estatísticas aos clientes.
+		Tem de mostrar os dados do radar, mostrar  mostrar o histórico, mostrar as estatísticas de cada um dos sentidos.
+		Vai à base de dados e retira de lá os dados.
+		Recebe a conexão com o cliente e retorna os dados.
+		
+		Teste unitário: Em vez de ir verificar às tabelas da BD verifica em tabelas dummy e não recebe uma conexão socket do cliente.
+
+	-autenticarUser(String user, String pass)
+		Este método recebe o user e a pass, vai verificar se existe na bd. 
+		Se existir e coincidir retorna true, se não retorna false.
+		
+		Teste unitário: Em vez de ir verificar às tabelas da BD verifica em tabelas dummy. 
+
+	-checkAdmin(String user, String tipo)
+		Este método recebe o user e o tipo de entidade, e vai verificar se é um administrador ou não.
+		Retorna true se for administrador e false se não for.
+		
+		Teste unitário: Em vez de ir verificar às tabelas da BD verifica em tabelas dummy. 
+
+	-registarEntidades(String nome, String user, String mail, String type)
+		Este método fará o registo de novas entidades, inserindo-as na Base de Dados.
+		Recebe os dados da entidade a registar.
+		Cria uma pass gerada automaticamente.
+		Coloca o user e a pass na tabela login da Base de Dados e coloca o nome, user, mail e tipo na tabela da entidades da BD.
+		retorna true se a entidade for inserida na BD e false caso não seja.
+
+		Teste unitário: Em vez de inserir em tabelas na BD insere em tabelas dummy. 
+
+
+	-exQuery(String query)
+		Este método recebe uma string que será a query, envia-a à base de dados e não irá retornar nada
+		Não se fazem testes unitários
+
+	-connect() 
+		Faz a conexão com a BD
+		Não tem parâmetros, mas vai retornar a ligação com a base de dados
+		Não se fazem testes unitários
+	
+	
