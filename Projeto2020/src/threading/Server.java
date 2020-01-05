@@ -7,17 +7,35 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe Server serve de servidor para a aplicação. Aceita vários clientes,
+ * criando uma thread para cada.
+ *
+ */
 public class Server extends Thread {
 
+    private Socket conexao;
+
+    public Server(Socket s) {
+        conexao = s;
+    }
+
+    /**
+     * No main, é iniciada uma conexão por sockets. É feito o refresh das views
+     * das estatísticas na Base de Dados de 10 em 10 minutos. Fica à espera de
+     * aceitar clientes.
+     *
+     * @param args
+     */
     public static void main(String args[]) {
 
         try {
 
             ServerSocket s = new ServerSocket(8090);
-            
-            int count=0;
+
+            int n_cliente = 0;
             while (true) {
-                //refresh das views materializadas de 10 em 10 minutos
+                //refresh das views materializadas das estatísticas de 10 em 10 minutos
                 Timer timer = new Timer();
                 TimerTask task = new TimerTask() {
                     public void run() {
@@ -26,46 +44,36 @@ public class Server extends Thread {
                         c.exQuery("refresh materialized view sentido2_last_10");
                         c.exQuery("refresh materialized view estatisticas_sentido_1");
                         c.exQuery("refresh materialized view estatisticas_sentido_2");
-                        System.out.println("tudo ok");
+                        System.out.println("Estatísticas dos últimos 10 minutos foram atualizadas.");
                     }
                 };
-                timer.scheduleAtFixedRate(task, 0, 10000); //1000ms = 1sec
+                timer.scheduleAtFixedRate(task, 0, 600000); //1000ms = 1sec
 
-                //conexao com clientes e criação de threads para cada
+                //conexao com clientes e criação de threads para cada um
                 System.out.println("Esperando alguem se conectar...");
                 Socket conexao = s.accept();
                 Thread t = new Server(conexao);
-                count++;
+                n_cliente++;
                 t.start();
-                System.out.println(count);
+                System.out.println("Nova conexão: cliente nº " + n_cliente);
             }
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
     }
 
-    private Socket conexao;
-
-    public Server(Socket s) {
-        conexao = s;
-    }
-
+    /**
+     * Ao ser criada uma nova thread, são enviadas ao cliente todas as
+     * estatísticas.
+     */
     public void run() {
 
         try {
-            DataInputStream dis = new DataInputStream(conexao.getInputStream());
-            String cliente_dados = dis.readUTF();
-            System.out.println("tipo de cliente: " + cliente_dados);
-
             PrintStream cliente = new PrintStream(conexao.getOutputStream());
 
             boolean id = true;
             while (id == true) {
-                sendEstatisticasCliente(cliente);
-//                if (cliente_dados.equals("1") || cliente_dados.equals("2")) {
-//                    sendHistorico(cliente);
-//                    
-//                }
+                enviarEstatisticas(cliente);
                 id = false;
             }
             conexao.close();
@@ -74,21 +82,19 @@ public class Server extends Thread {
         }
 
     }
-    
-//    public void recieveLogin(){ 
-//        try {
-//            DataInputStream dis = new DataInputStream(conexao.getInputStream());
-//            String user;
-//            String pass;
-//            user=dis.readUTF();
-//            pass=dis.readUTF();
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
 
-    public void sendEstatisticasCliente(PrintStream cliente) throws IOException {
+    /**
+     * O método enviarEstatisticas serve para enviar todas as estatisticas da
+     * base de dados ao cliente. Faz uma conexão à base de dados, envia-lhes
+     * queries e guarda esses dados em ResultSet. Guarda num objeto da classe
+     * Dados, os dados do Radar e do Histórico de cada sentido e envia ao
+     * cliente esse objeto. Envia também por PrintStream as estatísticas de cada
+     * sentido dos ultimos 10 minutos.
+     *
+     * @param cliente
+     * @throws IOException
+     */
+    public void enviarEstatisticas(PrintStream cliente) throws IOException {
         String[] dados = new String[10];
         JDBCConnect c = new JDBCConnect(); //conexao bd
         ResultSet rs = c.getQueryResult("select * from radar"); //query da bd
@@ -107,58 +113,54 @@ public class Server extends Thread {
         //criacao objeto Dados
         Dados allData = new Dados();
         allData.setRadarData(dados_radar[0], dados_radar[1], dados_radar[2], dados_radar[3], dados_radar[4]);
-            
+
         //historico sentido 1    
         ResultSet rs1 = c.getQueryResult("select * from historico_sentido_1");
-        
+
         ArrayList<String> stha = new ArrayList<>();
         ArrayList<String> sthb = new ArrayList<>();
-        
+
         try {
             while (rs1.next()) {
                 stha.add(rs1.getString(1));
                 sthb.add(rs1.getString(2));
-                
-                //dados_historico1[1] = rs1.getString(2);
-                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
-                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         allData.setData(stha);
         allData.setVel(sthb);
-        
-        
+
         //historico sentido 2   
         rs1 = c.getQueryResult("select * from historico_sentido_2");
-        
+
         ArrayList<String> stha2 = new ArrayList<>();
         ArrayList<String> sthb2 = new ArrayList<>();
-        
+
         try {
             while (rs1.next()) {
                 stha2.add(rs1.getString(1));
                 sthb2.add(rs1.getString(2));
-                
-                //dados_historico1[1] = rs1.getString(2);
-                //ah1.add(new Historico(dados_historico1[0], dados_historico1[1]));
-                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         allData.setData2(stha2);
         allData.setVel2(sthb2);
-        
+
         //WriteObject
         ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());
         oos.flush();
         oos.writeObject(allData);
-        
-        //sentidos
+
+        /*
+        Estatísticas dos sentidos, nos ultimos 10 minutos.
+        Seria feito com as views estatisticos_sentido_1 e estatisticos_sentido_2,
+        que vão sendo atualizadas, mas como neste caso não temos sempre novos dados, 
+        fizemos com views que têm os dados todos.
+         */
         rs1 = c.getQueryResult("select * from sentido1");
         try {
             while (rs1.next()) {
@@ -185,10 +187,10 @@ public class Server extends Thread {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        for (int i = 0; i < dados.length; i++) { //envia dados 
+        //envia as estatisticas de cada sentido dos últimos 10 minutos
+        for (int i = 0; i < dados.length; i++) {
             cliente.println(dados[i]);
         }
-        
 
     }
 }

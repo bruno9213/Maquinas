@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.awt.Dimension;
@@ -17,7 +12,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Maria
+ * Classe que serve de interface para a aplicação Client. Vai receber os dados
+ * das estatísticas, do histórico e do radar e mostrá-los.
  */
 public class JFrame_Cliente extends javax.swing.JFrame {
 
@@ -27,7 +23,9 @@ public class JFrame_Cliente extends javax.swing.JFrame {
     private ArrayList<String> vel, vel2;
 
     /**
-     * Creates new form JFrame_Entidade
+     * Cria um novo form JFrame_Entidade Cliente sem login é o default logo não
+     * são mostrados os botões do histórico nem das Entidades
+     *
      */
     public JFrame_Cliente() {
         initComponents();
@@ -36,6 +34,10 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jButton6.setVisible(false);
     }
 
+    /**
+     * Método loginAdmin altera a visibilidade dos botões, mostrando os botões
+     * de Historico e Entidades.
+     */
     public void loginAdmin() {
         jButton3.setVisible(true);
         jButton4.setVisible(true);
@@ -43,6 +45,10 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jButton6.setVisible(true);
     }
 
+    /**
+     * Método loginEnt altera a visibilidade dos botões, mostrando os botões de
+     * Historico.
+     */
     public void loginEnt() {
         jButton3.setVisible(true);
         jButton1.setVisible(false);
@@ -50,6 +56,12 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jButton4.setVisible(false);
     }
 
+    /**
+     * Método setAllData recebe como parâmetros um objeto da Classe Dados,
+     * mostra os dados do Radar e guarda o histórico
+     *
+     * @param r
+     */
     public void setAllData(Dados r) {
         jLabel8.setText(r.getName());
         jLabel9.setText(r.getLocal());
@@ -61,6 +73,12 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         vel2 = r.getVel2();
     }
 
+    /**
+     * O método setDadosSentido recebe como parâmetro as estatisticas de cada
+     * sentido e mostra-as na interface.
+     *
+     * @param str
+     */
     public void setDadosSentido(String[] str) {
         this.str = str;
         jLabel25.setText("Sentido: 1");
@@ -72,11 +90,19 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         jLabel24.setText(str[4]);
     }
 
+    /**
+     * Retorna a largura do ecrã.
+     * @return 
+     */
     public int screenWidth() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int) screenSize.getWidth();
     }
 
+    /**
+     * Retorna a altura do ecrã.
+     * @return 
+     */
     public int screenHeight() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int) screenSize.getHeight();
@@ -359,7 +385,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //HISTORICO
+        //historico
         JFrame_Historico jfh = new JFrame_Historico();
         jfh.setValues(data, vel, data2, vel2);
         jfh.setLocation((screenWidth() / 2) - (jfh.getSize().width / 2), (screenHeight() / 2) - (jfh.getSize().height / 2));
@@ -391,8 +417,8 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            // TODO add your handling code here:
-            Socket conexao = new Socket("127.0.0.1", 8090); //não sei se isto será muito bom
+            // Logout, cria um novo cliente sem login
+            Socket conexao = new Socket("127.0.0.1", 8090); 
             Thread t;
             JFrame_Cliente j = new JFrame_Cliente();
             t = new Thread(new Client(conexao, j));

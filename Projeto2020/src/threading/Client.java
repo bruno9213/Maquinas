@@ -7,10 +7,37 @@ import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe Client é a aplicação cliente que se conecta à aplicação Server.
+ *
+ */
 public class Client extends Thread {
 
     private static boolean done = false;
 
+    public Socket conexao;
+
+    private JFrame_Cliente j;
+
+    /**
+     * Construtor desta Classe, recebe como parâmetros Socket, que é a conexão
+     * com o servidor e uma nova JFrame_Cliente, que será a interface da
+     * aplicação.
+     *
+     * @param s
+     * @param j
+     */
+    public Client(Socket s, JFrame_Cliente j) {
+        conexao = s;
+        this.j = j;
+    }
+
+    /**
+     * No main inicia uma conexão ao servidor e cria uma nova Thread de Client e
+     * coloca a JFrame, a interface do cliente visível.
+     *
+     * @param args
+     */
     public static void main(String args[]) {
         try {
             Socket conexao = new Socket("127.0.0.1", 8090);
@@ -23,67 +50,37 @@ public class Client extends Thread {
             System.out.println("IOException: " + e);
         }
     }
-    public Socket conexao;
-    private JFrame_Cliente j;
-    public boolean logado, admin;
 
-    public Client(Socket s, JFrame_Cliente j) {
-        conexao = s;
-        this.j = j;
-        logado = false; //cliente normal começa sempre sem login
-        admin = false;
-    }
-
-    public Socket getConexao() {
-        return conexao;
-    }
-    
-    public void login_ent(){
-        logado=true;
-    }
-    
-    public void login_admin(){
-        logado=true;
-        admin=true;
-    }
-
-    public int screenWidth(){
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+    /**
+     * Retorna a largura do ecrã.
+     *
+     * @return
+     */
+    public int screenWidth() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int) screenSize.getWidth();
     }
-    
-    public int screenHeight(){
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+
+    /**
+     * Retorna a altura do ecrã.
+     *
+     * @return
+     */
+    public int screenHeight() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int) screenSize.getHeight();
     }
-    
-    public void sendStatus(Client c){
-        try {
-            System.out.println("here:" + admin + logado);
-            //PrintStream cliente = new PrintStream(conexao.getOutputStream());
-            DataOutputStream dout = new DataOutputStream(conexao.getOutputStream());
-            if (admin == true) {
-                dout.writeUTF("2");
-            } else if (logado == true) {
-                dout.writeUTF("1");
-            } else {
-                dout.writeUTF("0");
-            }
-            dout.flush(); // send the message
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
+    /**
+     * Vai correr quando a nova thread começa, recebe os dados que o Server
+     * envia.
+     */
     public void run() {
 
         //centrar a form
-        j.setLocation((screenWidth()/2)-(j.getSize().width/2), (screenHeight()/2)-(j.getSize().height/2));
-        
-        //STATUS
-        sendStatus(this);
-        
-        //Ler todos os dados 
+        j.setLocation((screenWidth() / 2) - (j.getSize().width / 2), (screenHeight() / 2) - (j.getSize().height / 2));
+
+        //Ler objeto Dados que tem os dados do Radar e do Historico
         try {
             ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
             Dados r = (Dados) ois.readObject();
@@ -94,7 +91,7 @@ public class Client extends Thread {
             System.out.println("ClassNotFoundException: " + ex);
         }
 
-        //DADOS RADAR SENTIDO 1 e 2 (manter em ultimo por causa do loop)
+        //Estatisticas de cada sentido dos últimos 10 minutos (manter em ultimo por causa do loop)
         String[] ar = new String[12];
         int i = 0;
         try {
@@ -112,7 +109,7 @@ public class Client extends Thread {
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
-        
+
         //FIM DA THREAD
         done = true;
     }

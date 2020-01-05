@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.sql.ResultSet;
@@ -11,9 +6,21 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe Login
+ *
+ */
 public class Login {
 
-    //TODO
+    /**
+     * Método autenticarUser recebe como parâmetros Srings com o username e a
+     * password. Vai se existem na BD e se são coincidentes. Caso isso aconteça
+     * retorna true.
+     *
+     * @param user
+     * @param pass
+     * @return
+     */
     public boolean autenticarUser(String user, String pass) {
         JDBCConnect c = new JDBCConnect();
         ResultSet rs = c.getQueryResult("select * from login");
@@ -33,9 +40,17 @@ public class Login {
             }
         }
 
-        return false; //TODO
+        return false;
     }
 
+    /**
+     * Método checkAdmin recebe uma String com o user e vai à BD verificar se
+     * este user é administrador ou não, pois isso foi guardado num campo na
+     * tabela entidades da BD.
+     *
+     * @param user
+     * @return
+     */
     public boolean checkAdmin(String user) {
         JDBCConnect c = new JDBCConnect();
         ResultSet rs = c.getQueryResult("select * from entidades");
@@ -47,15 +62,14 @@ public class Login {
         } catch (SQLException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean ok = false;
+        boolean admin = false;
         for (String tmp : dataUser) {
-            System.out.println(tmp);
             if (tmp.equals(user + "," + "0")) {
-                ok = true;
-                System.out.println("entrouuuu");
+                admin = true;
+                System.out.println("Administrador fez login.");
             }
         }
-        return ok;
+        return admin;
     }
 
 }

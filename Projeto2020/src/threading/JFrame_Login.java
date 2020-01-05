@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.awt.event.WindowEvent;
@@ -16,12 +11,13 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author acam1
+ * Classe que serve de interface para o Login.
  */
 public class JFrame_Login extends javax.swing.JFrame {
 
     /**
-     * Creates new form Login
+     * Cria um novo form JFrame_Login que vai mostrar uma interface para o
+     * utilizador inserir os dados do user e pass.
      */
     public JFrame_Login() {
         initComponents();
@@ -167,7 +163,6 @@ public class JFrame_Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
         this.dispose();
-        
         try {
             Socket conexao = new Socket("127.0.0.1", 8090);
             JFrame_Cliente j = new JFrame_Cliente();
@@ -184,7 +179,10 @@ public class JFrame_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        /*
+        ao clicar em entrar vai verificar o user e a pass e criar um novo cliente,
+        consoante este seja uma aministrador ou uma entidade normal
+        */
         Login l = new Login();
         String pwd = new String(jPasswordField1.getPassword());
         String user = jTextField1.getText();

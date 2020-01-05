@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.awt.List;
@@ -12,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Carolina Tavares
+ * Classe que serve de interface para o Histórico.
  */
 public class JFrame_Historico extends javax.swing.JFrame {
 
@@ -20,13 +15,22 @@ public class JFrame_Historico extends javax.swing.JFrame {
     private String[] dataS, dataS2, velS, velS2;
 
     /**
-     * Creates new form Entidades
+     * Cria um novo form JFrame_Historico que vai mostrar uma tabela com o
+     * historico para cada sentido.
      *
      */
     public JFrame_Historico() {
         initComponents();
     }
 
+    /**
+     * Método setValues vai colocar na tabela os valores do historico
+     *
+     * @param data
+     * @param vel
+     * @param data2
+     * @param vel2
+     */
     public void setValues(ArrayList<String> data, ArrayList<String> vel, ArrayList<String> data2, ArrayList<String> vel2) {
         dataS = data.toArray(String[]::new);
         velS = vel.toArray(String[]::new);
@@ -35,6 +39,12 @@ public class JFrame_Historico extends javax.swing.JFrame {
         updateTable(sentido);
     }
 
+    /**
+     * Método updateTable vai mudar os dados consoante o sentido, recebendo como
+     * parâmetro um int com o sentido
+     *
+     * @param sentido
+     */
     public void updateTable(int sentido) {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.getDataVector().removeAllElements();
@@ -55,7 +65,6 @@ public class JFrame_Historico extends javax.swing.JFrame {
                 }
             }
         }
-
         jTable2.setModel(model);
     }
 

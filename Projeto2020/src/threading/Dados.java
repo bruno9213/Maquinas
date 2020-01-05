@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.io.Serializable;
@@ -10,16 +5,15 @@ import java.util.ArrayList;
 
 /**
  *
- * @author bruno
+ * Classe Dados serve para guardar os dados da BD do histórico e do Radar.
  */
-public class Dados implements Serializable{
-    
-    private String name, local,id, n_vias, n_sent;
+public class Dados implements Serializable {
+
+    private String name, local, id, n_vias, n_sent;
     private ArrayList<String> data, data2;
     private ArrayList<String> vel, vel2;
-    
-    //Historico
-    
+
+    //Historico sentido 1
     public ArrayList<String> getData() {
         return data;
     }
@@ -27,7 +21,16 @@ public class Dados implements Serializable{
     public ArrayList<String> getVel() {
         return vel;
     }
-    
+
+    public void setData(ArrayList<String> data) {
+        this.data = data;
+    }
+
+    public void setVel(ArrayList<String> vel) {
+        this.vel = vel;
+    }
+
+    //Historico sentido 2
     public ArrayList<String> getData2() {
         return data2;
     }
@@ -36,24 +39,15 @@ public class Dados implements Serializable{
         return vel2;
     }
 
-    public void setData(ArrayList<String> data) {
-        this.data = data;
-    }
-      
-    public void setVel(ArrayList<String> vel) {
-        this.vel = vel;
-    }
-    
     public void setData2(ArrayList<String> data2) {
         this.data2 = data2;
     }
-      
+
     public void setVel2(ArrayList<String> vel2) {
         this.vel2 = vel2;
     }
-    
+
     //Radar
-    
     public String getId() {
         return id;
     }
@@ -81,6 +75,5 @@ public class Dados implements Serializable{
         this.n_vias = n_vias;
         this.n_sent = n_sent;
     }
-    
-    
+
 }

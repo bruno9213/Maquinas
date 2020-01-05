@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threading;
 
 import java.sql.Statement;
@@ -14,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Classe JDBCConnect serve para criar uma ligação à Base de Dados pretendida.
  *
- * @author bruno
  */
 public class JDBCConnect {
 
@@ -23,6 +18,11 @@ public class JDBCConnect {
     private final String user = "postgres";
     private final String password = "bruno9213";
 
+    /**
+     * Método construtor que retorna um objeto de Connection com a conexão à BD.
+     *
+     * @return
+     */
     public Connection connect() {
         Connection conn = null;
 
@@ -36,6 +36,13 @@ public class JDBCConnect {
         return conn;
     }
 
+    /**
+     * Método getQueryResult recebe uma String que é a query, executa-a na BD e
+     * retorna um ResultSet com resultado da query da BD.
+     *
+     * @param str
+     * @return
+     */
     public ResultSet getQueryResult(String str) {
         JDBCConnect app = new JDBCConnect();
         Connection conn = app.connect();
@@ -48,6 +55,11 @@ public class JDBCConnect {
         return rs;
     }
 
+    /**
+     * Método exQuery recebe uma String que é a query e executa-a na BD.
+     *
+     * @param str
+     */
     public void exQuery(String str) {
         JDBCConnect app = new JDBCConnect();
         Connection conn = app.connect();
