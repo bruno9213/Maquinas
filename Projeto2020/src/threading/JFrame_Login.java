@@ -5,6 +5,7 @@
  */
 package threading;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.ResultSet;
@@ -46,7 +47,7 @@ public class JFrame_Login extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTextField1.setForeground(new java.awt.Color(153, 153, 153));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -164,8 +165,18 @@ public class JFrame_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setVisible(false);
-        dispose();
+        this.setVisible(false);
+        this.dispose();
+        
+        try {
+            Socket conexao = new Socket("127.0.0.1", 8090);
+            JFrame_Cliente j = new JFrame_Cliente();
+            Thread t = new Thread(new Client(conexao, j));
+            t.start();
+            j.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(JFrame_Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton2KeyPressed
@@ -176,25 +187,29 @@ public class JFrame_Login extends javax.swing.JFrame {
 
         Login l = new Login();
         String pwd = new String(jPasswordField1.getPassword());
-        String user= jTextField1.getText();
+        String user = jTextField1.getText();
         System.out.println(l.autenticarUser(user, pwd));
 
         try {
             Socket conexao = new Socket("127.0.0.1", 8090);
             Thread t;
 
-            if ((l.autenticarUser(user, pwd))==true) {
+            if ((l.autenticarUser(user, pwd)) == true) { //login efetuado com sucesso
                 JFrame_Cliente j = new JFrame_Cliente();
-                if(l.checkAdmin(user)==true){
+                if (l.checkAdmin(user) == true) {
                     j.loginAdmin();
-                }else{
+                } else {
                     j.loginEnt();
                 }
                 t = new Thread(new Client(conexao, j));
                 t.start();
                 j.setVisible(true);
                 jLabel4.setVisible(false);
-            }else{
+                //this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                this.setVisible(false);
+                this.dispose();
+
+            } else {
                 jLabel4.setVisible(true);
             }
 

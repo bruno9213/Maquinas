@@ -129,7 +129,7 @@ public class JFrame_Cliente extends javax.swing.JFrame {
 
         jLabel21.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Dados Radar");
         setResizable(false);
 
@@ -350,20 +350,20 @@ public class JFrame_Cliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        //login
         JFrame_Login l = new JFrame_Login();
         l.setLocation((screenWidth() / 2) - (l.getSize().width / 2), (screenHeight() / 2) - (l.getSize().height / 2));
         l.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         //HISTORICO
         JFrame_Historico jfh = new JFrame_Historico();
         jfh.setValues(data, vel, data2, vel2);
         jfh.setLocation((screenWidth() / 2) - (jfh.getSize().width / 2), (screenHeight() / 2) - (jfh.getSize().height / 2));
         jfh.setVisible(true);
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -398,6 +398,8 @@ public class JFrame_Cliente extends javax.swing.JFrame {
             t = new Thread(new Client(conexao, j));
             t.start();
             j.setVisible(true);
+            this.setVisible(false);
+            this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(JFrame_Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
