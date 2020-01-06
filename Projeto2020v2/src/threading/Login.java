@@ -50,9 +50,10 @@ public class Login extends Thread {
                 String comando = dis.readUTF();
                 if (comando.equals("login")) {
                     login(conexao);
-                } else if (comando.equals("lista entidades")) {
-                    listaEntidades(conexao);
-                }
+                } 
+//                else if (comando.equals("lista entidades")) {
+//                    listaEntidades(conexao);
+//                }
                 /*
                 ACHO QUE AQUI SE PODIA FAZER ALGO PARA AS ENTIDADES.
                 COM COMANDOS SE LHE ENVIASSE O COMANDO PARA FAZER LOGIN FAZIA O QUE ESTÁ EM CIMA

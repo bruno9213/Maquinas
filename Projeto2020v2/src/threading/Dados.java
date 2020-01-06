@@ -13,6 +13,17 @@ public class Dados implements Serializable {
     private ArrayList<String> data, data2;
     private ArrayList<String> vel, vel2;
     private String[]estatisticas;
+    private Entidades e;
+
+    //Entidades
+    public Entidades getE() {
+        return e;
+    }
+
+    public void setE(Entidades e) {
+        this.e = e;
+    }
+    
     
     //estatisticas
 

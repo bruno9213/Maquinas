@@ -187,6 +187,31 @@ public class Server extends Thread {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         allData.setEstatisticas(dados);
+        
+        Entidades e = new Entidades();
+        rs1 = c.getQueryResult("select e.id, e.nome, e.user, e.mail, t.nome from entidades e join type_entidades t on e.type_entidadeid=t.id");
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> nome = new ArrayList<>();
+            ArrayList<String> user = new ArrayList<>();
+            ArrayList<String> mail = new ArrayList<>();
+            ArrayList<String> type = new ArrayList<>();
+            try {
+                while (rs1.next()) {
+                    id.add(rs1.getString(1));
+                    nome.add(rs1.getString(2));
+                    user.add(rs1.getString(3));
+                    mail.add(rs1.getString(4));
+                    type.add(rs1.getString(5));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            e.setId(id);
+            e.setMail(mail);
+            e.setNome(nome);
+            e.setType(type);
+            e.setUser(user);
+            allData.setE(e);
 
         //WriteObject
         ObjectOutputStream oos = new ObjectOutputStream(conexao.getOutputStream());

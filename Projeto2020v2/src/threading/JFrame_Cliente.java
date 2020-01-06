@@ -75,6 +75,11 @@ public class JFrame_Cliente extends javax.swing.JFrame {
         vel = r.getVel();
         data2 = r.getData2();
         vel2 = r.getVel2();
+        id=r.getE().getId();
+        nome=r.getE().getNome();
+        mail=r.getE().getMail();
+        user=r.getE().getUser();
+        type=r.getE().getType();
     }
 
     /**
@@ -444,35 +449,13 @@ public class JFrame_Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
+       
             // TODO add your handling code here:
             JFrame_Admin ja = new JFrame_Admin();
-
-            //enviar comando entidades ao servidor de login
-            Socket conexao = new Socket("127.0.0.1", 8095);
-            DataOutputStream dout = new DataOutputStream(conexao.getOutputStream());
-            dout.writeUTF("lista entidades");
-            dout.flush();
-
-            //receber dados
-            ObjectInputStream ois = new ObjectInputStream(conexao.getInputStream());
-            try {
-                Entidades e = (Entidades) ois.readObject();
-                id=e.getId();
-                nome=e.getNome();
-                mail=e.getMail();
-                user=e.getUser();
-                type=e.getType();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(JFrame_Cliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
             ja.setLista(id, nome, user, mail, type);
             ja.setLocation((screenWidth() / 2) - (ja.getSize().width / 2), (screenHeight() / 2) - (ja.getSize().height / 2));
             ja.setVisible(true);
-            conexao.close();
-        } catch (IOException ex) {
-            Logger.getLogger(JFrame_Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
