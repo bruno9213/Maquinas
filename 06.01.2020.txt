@@ -1,0 +1,24 @@
+Austin e Carolina
+	preparar ficheiro com bd
+	com as tabelas e as views todas
+	explicar a criação destas coisas para o relatorio
+	conexao com BD - classe JDBC
+		
+	Casos de teste e código alterado para os testes??
+	falar da criação das JFrames??
+
+Bruno Maria Diogo
+	acabar o que falta do projeto
+		validação do registo de entidades
+		eliminação de entidades
+
+	relatório parte da Implementação netbeans:
+		autenticação
+		enviar estatisticas
+		registo e eliminação de entidades
+
+TEMOS DE FAZER A APRESENTAÇÃO
+	DIVIDIR O QUE CADA UM VAI FALAR
+	
+
+		

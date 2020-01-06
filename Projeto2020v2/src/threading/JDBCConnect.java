@@ -16,7 +16,7 @@ public class JDBCConnect {
 
     private final String url = "jdbc:postgresql://localhost/bdptda";
     private final String user = "postgres";
-    private final String password = "M14475125n!";
+    private final String password = "bruno9213";
 
     /**
      * Método construtor que retorna um objeto de Connection com a conexão à BD.

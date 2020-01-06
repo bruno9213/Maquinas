@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe Client é a aplicação cliente que se conecta à aplicação Server.
@@ -92,5 +94,11 @@ public class Client extends Thread {
 
         //FIM DA THREAD
         done = true;
+        try {
+            conexao.close();
+            System.out.println("Cliente Fechou");
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
