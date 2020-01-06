@@ -403,8 +403,10 @@ public class JFrame_Cliente extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //historico
         JFrame_Historico jfh = new JFrame_Historico();
+        jfh.setParent(this);
         jfh.setValues(data, vel, data2, vel2);
         jfh.setLocation((screenWidth() / 2) - (jfh.getSize().width / 2), (screenHeight() / 2) - (jfh.getSize().height / 2));
+        this.setVisible(false);
         jfh.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -452,6 +454,8 @@ public class JFrame_Cliente extends javax.swing.JFrame {
        
             // TODO add your handling code here:
             JFrame_Admin ja = new JFrame_Admin();
+            ja.setParent(this);
+            this.setVisible(false);
             ja.setLista(id, nome, user, mail, type);
             ja.setLocation((screenWidth() / 2) - (ja.getSize().width / 2), (screenHeight() / 2) - (ja.getSize().height / 2));
             ja.setVisible(true);

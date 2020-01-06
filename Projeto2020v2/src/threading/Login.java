@@ -50,10 +50,12 @@ public class Login extends Thread {
                 String comando = dis.readUTF();
                 if (comando.equals("login")) {
                     login(conexao);
-                } 
-//                else if (comando.equals("lista entidades")) {
-//                    listaEntidades(conexao);
-//                }
+                }
+                if (comando.equals("criar")) {
+                    System.out.println("here1");
+                    registarEntidade(conexao);
+                }
+
                 /*
                 ACHO QUE AQUI SE PODIA FAZER ALGO PARA AS ENTIDADES.
                 COM COMANDOS SE LHE ENVIASSE O COMANDO PARA FAZER LOGIN FAZIA O QUE ESTÁ EM CIMA
@@ -68,6 +70,34 @@ public class Login extends Thread {
             System.out.println("IOException: " + e);
         }
 
+    }
+
+    public void registarEntidade(Socket conexao) {
+        try {
+            System.out.println("here2");
+            JDBCConnect c = new JDBCConnect();
+            DataInputStream dis = new DataInputStream(conexao.getInputStream());
+            String nome = dis.readUTF();
+            String user = dis.readUTF();
+            String mail = dis.readUTF();
+            int type = dis.readInt();
+            System.out.println("here3");
+            ResultSet rs1 = c.getQueryResult("select id from entidades order by id desc");
+            rs1.next();
+            int id = rs1.getInt(1);
+            System.out.println(id);
+            System.out.println("here5");
+            Pass pass = new Pass();
+            String pwd = pass.generateRandomPassword(5);
+            c.insert_login(user, pwd);
+            System.out.println("here6");
+            c.insert_entidade(id + 1, nome, user, mail, type);
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException1: " + ex);
+        } catch (IOException ex) {
+            System.out.println("IOExceptionaaa: " + ex);
+        }
     }
 
     /**
@@ -97,55 +127,6 @@ public class Login extends Thread {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    /**
-     * Método que retorna um Objeto da Classe Entidades com todos os dados da BD
-     * das entidades
-     *
-     * @return
-     */
-    public void listaEntidades(Socket conexao) {
-        ObjectOutputStream oos = null;
-        try {
-            JDBCConnect c = new JDBCConnect();
-            //criacao objeto Entidades
-            Entidades e = new Entidades();
-            //historico sentido 1
-            ResultSet rs1 = c.getQueryResult("select e.id, e.nome, e.user, e.mail, t.nome from entidades e join type_entidades t on e.type_entidadeid=t.id");
-            ArrayList<String> id = new ArrayList<>();
-            ArrayList<String> nome = new ArrayList<>();
-            ArrayList<String> user = new ArrayList<>();
-            ArrayList<String> mail = new ArrayList<>();
-            ArrayList<String> type = new ArrayList<>();
-            try {
-                while (rs1.next()) {
-                    id.add(rs1.getString(1));
-                    nome.add(rs1.getString(2));
-                    user.add(rs1.getString(3));
-                    mail.add(rs1.getString(4));
-                    type.add(rs1.getString(5));
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            e.setId(id);
-            e.setMail(mail);
-            e.setNome(nome);
-            e.setType(type);
-            e.setUser(user);
-            oos = new ObjectOutputStream(conexao.getOutputStream());
-            oos.flush();
-            oos.writeObject(e);
-        } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                oos.close();
-            } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     /**

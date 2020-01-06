@@ -16,7 +16,7 @@ public class JDBCConnect {
 
     private final String url = "jdbc:postgresql://localhost/bdptda";
     private final String user = "postgres";
-    private final String password = "bruno9213";
+    private final String password = "M14475125n!";
 
     /**
      * Método construtor que retorna um objeto de Connection com a conexão à BD.
@@ -68,6 +68,55 @@ public class JDBCConnect {
             stm.executeQuery(str);
         } catch (SQLException ex) {
         }
+    }
+
+    public void insert_login(String user, String pass) {
+        JDBCConnect app = new JDBCConnect();
+        Connection conn = app.connect();
+        String inserir = "insert into login values('" + user + "','" + pass + "')";
+        try {
+            Statement stm2 = (Statement) conn.createStatement();
+            stm2.executeQuery(inserir);
+        } catch (SQLException ex) {
+        }
+
+    }
+
+    public void insert_entidade(int id, String nome, String user, String mail, int id_type) {
+        JDBCConnect app = new JDBCConnect();
+        Connection conn = app.connect();
+        System.out.println("mm");
+        String inserir = "insert into entidades values('" + id + "','" + nome + "','" + user + "','" + mail + "','" + id_type + "')";
+        try {
+            Statement stm2 = (Statement) conn.createStatement();
+            System.out.println("mmm");
+            stm2.executeQuery(inserir);
+            System.out.println("mmmmm");
+        } catch (SQLException ex) {
+            System.out.println("SQLExceptionhee:" + ex);
+
+        }
+
+    }
+
+    public void get_type() {
+        try {
+            JDBCConnect app = new JDBCConnect();
+            Connection conn = app.connect();
+
+            String consulta = "select * from type_entidades";
+            Statement stm = (Statement) conn.createStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                System.out.println(id + "\t" + nome + "\t");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCConnect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 //    public boolean getLoginResult(String user, String pass, String loginQuery, JDBCConnect app) throws SQLException {

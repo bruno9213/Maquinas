@@ -13,6 +13,11 @@ public class JFrame_Historico extends javax.swing.JFrame {
 
     private int sentido = 1;
     private String[] dataS, dataS2, velS, velS2;
+    private JFrame_Cliente parent;
+
+    public void setParent(JFrame_Cliente parent) {
+        this.parent = parent;
+    }
 
     /**
      * Cria um novo form JFrame_Historico que vai mostrar uma tabela com o
@@ -191,8 +196,9 @@ public class JFrame_Historico extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        setVisible(false);
-        dispose();
+        this.setVisible(false);
+        this.dispose();
+        this.parent.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
