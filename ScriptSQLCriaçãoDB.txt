@@ -1,0 +1,205 @@
+-- Tabelas
+
+CREATE TABLE public.type_objeto
+(
+    id_type integer NOT NULL,
+    nome character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT type_objeto_pkey PRIMARY KEY (id_type)
+);
+
+CREATE TABLE public.type_entidades
+(
+    id integer NOT NULL,
+    nome character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT type_entidades_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.radar
+(
+    id integer NOT NULL,
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    "localização" character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    num_vias integer NOT NULL,
+    num_sentido integer NOT NULL,
+    CONSTRAINT radar_pkey PRIMARY KEY (id)
+);
+
+
+CREATE TABLE public.login
+(
+    "user" character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    pass character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT login_pkey PRIMARY KEY ("user")
+);
+
+CREATE TABLE public.entidades
+(
+    id integer NOT NULL,
+    nome character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    "user" character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    mail character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    type_entidadeid integer NOT NULL,
+    CONSTRAINT entidades_pkey PRIMARY KEY (id),
+    CONSTRAINT entidades FOREIGN KEY (type_entidadeid)
+        REFERENCES public.type_entidades (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT "user" FOREIGN KEY ("user")
+        REFERENCES public.login ("user") MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE public.dadosobjetos
+(
+    id integer NOT NULL,
+    "timestamp" timestamp without time zone NOT NULL,
+    velocidade integer NOT NULL,
+    sentido character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    id_type integer NOT NULL,
+    id_radar integer NOT NULL,
+    CONSTRAINT dadosobjetos_pkey PRIMARY KEY (id),
+    CONSTRAINT id_radar FOREIGN KEY (id_radar)
+        REFERENCES public.radar (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT id_type FOREIGN KEY (id_type)
+        REFERENCES public.type_objeto (id_type) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+
+-- Inserção de valores
+-- tipos de objeto
+insert into type_objeto values (0, 'ONI');
+insert into type_objeto values (1, 'Pedestre');
+insert into type_objeto values (2, 'Bicicleta/Motociclo);
+insert into type_objeto values (3, 'Carro');
+insert into type_objeto values (4, 'Camião');
+
+-- Tipos de entidades
+insert into type_entidades values (0, 'Admin');
+insert into type_entidades values (1, 'naoadmin');
+
+-- Login 
+insert into login values ('admin', 'admin');
+insert into login values ('cliente', 'cliente');
+
+-- Radar
+insert into radar values (1, 'Radar Costa Nova', 'costanova', 2, 2);
+
+--Entidades
+insert into entidades values (0, 'admin', 'admin', 'admin@admin.pt', 0);
+insert into entidades values (1, 'cliente', 'cliente', 'cliente@cliente.pt', 1);
+
+-- DadosObjeto
+-- importar ficheiro CSV
+
+-- Views
+
+CREATE MATERIALIZED VIEW public.historico_sentido_1
+TABLESPACE pg_default
+AS
+ SELECT dadosobjetos."timestamp" AS "Data Hora",
+    dadosobjetos.velocidade AS "Velocidade"
+   FROM dadosobjetos
+  WHERE (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '1'::text
+WITH DATA;
+
+CREATE MATERIALIZED VIEW public.historico_sentido_2
+TABLESPACE pg_default
+AS
+ SELECT dadosobjetos."timestamp" AS "Data Hora",
+    abs(dadosobjetos.velocidade) AS "Velocidade"
+   FROM dadosobjetos
+  WHERE (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '0'::text
+WITH DATA;
+
+
+-- Se existisse ligação com uma data stream:
+
+CREATE MATERIALIZED VIEW public.sentido1_last_10
+TABLESPACE pg_default
+AS
+ SELECT count(*) AS "Contagem",
+    avg(dadosobjetos.velocidade) AS "Velocidade Media",
+    max(dadosobjetos.velocidade) AS "Velocidade Maxima",
+    min(dadosobjetos.velocidade) AS "Velocidade Minima"
+   FROM dadosobjetos
+  WHERE dadosobjetos."timestamp" >= (now()::timestamp without time zone - '00:10:00'::interval) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '1'::text
+WITH DATA;
+
+CREATE MATERIALIZED VIEW public.sentido2_last_10
+TABLESPACE pg_default
+AS
+ SELECT count(*) AS "Contagem",
+    abs(avg(dadosobjetos.velocidade)) AS "Velocidade Media",
+    max(abs(dadosobjetos.velocidade)) AS "Velocidade Maxima",
+    min(abs(dadosobjetos.velocidade)) AS "Velocidade Minima"
+   FROM dadosobjetos
+  WHERE dadosobjetos."timestamp" >= (now()::timestamp without time zone - '00:10:00'::interval) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '0'::text
+WITH DATA;
+
+-- Como não temos, aumentou-se periodo de tempo para 365 dias para termos dados para testar
+
+CREATE MATERIALIZED VIEW public.sentido1_all
+TABLESPACE pg_default
+AS
+ SELECT count(*) AS contagem,
+    avg(abs(dadosobjetos.velocidade)) AS velocidade_media,
+    max(abs(dadosobjetos.velocidade)) AS maxima,
+    min(abs(dadosobjetos.velocidade)) AS minima
+   FROM dadosobjetos
+  WHERE dadosobjetos."timestamp" >= (now()::timestamp without time zone - '365 days'::interval) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '1'::text
+WITH DATA;
+
+CREATE MATERIALIZED VIEW public.sentido2_all
+TABLESPACE pg_default
+AS
+ SELECT count(*) AS contagem,
+    avg(abs(dadosobjetos.velocidade)) AS velocidade_media,
+    max(abs(dadosobjetos.velocidade)) AS maxima,
+    min(abs(dadosobjetos.velocidade)) AS minima
+   FROM dadosobjetos
+  WHERE dadosobjetos."timestamp" >= (now()::timestamp without time zone - '365 days'::interval) AND (dadosobjetos.id_type = ANY (ARRAY[2, 3, 4])) AND dadosobjetos.sentido::text = '0'::text
+WITH DATA;
+
+CREATE MATERIALIZED VIEW public.estatisticas_sentido_1
+TABLESPACE pg_default
+AS
+ SELECT sentido1_last_10."Contagem",
+    sentido1_last_10."Velocidade Media",
+    sentido1_last_10."Velocidade Maxima",
+    sentido1_last_10."Velocidade Minima",
+        CASE
+            WHEN sentido1_last_10."Contagem" = 0 THEN 'pouco trânsito'::text
+            WHEN sentido1_last_10."Velocidade Media" >= 50::numeric THEN 'pouco trânsito'::text
+            WHEN sentido1_last_10."Velocidade Media" < 50::numeric AND sentido1_last_10."Velocidade Media" >= 30::numeric THEN 'trânsito moderado'::text
+            WHEN sentido1_last_10."Velocidade Media" < 30::numeric AND sentido1_last_10."Velocidade Media" >= 10::numeric THEN 'muito trânsito'::text
+            WHEN sentido1_last_10."Velocidade Media" < 10::numeric AND sentido1_last_10."Velocidade Media" >= 0::numeric THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS "Estado do Transito"
+   FROM sentido1_last_10
+  GROUP BY sentido1_last_10."Velocidade Media", sentido1_last_10."Contagem", sentido1_last_10."Velocidade Maxima", sentido1_last_10."Velocidade Minima"
+WITH DATA;
+
+
+CREATE MATERIALIZED VIEW public.estatisticas_sentido_2
+TABLESPACE pg_default
+AS
+ SELECT sentido2_last_10."Contagem",
+    sentido2_last_10."Velocidade Media",
+    sentido2_last_10."Velocidade Maxima",
+    sentido2_last_10."Velocidade Minima",
+        CASE
+            WHEN sentido2_last_10."Contagem" = 0 THEN 'pouco trânsito'::text
+            WHEN sentido2_last_10."Velocidade Media" >= 50::numeric THEN 'pouco trânsito'::text
+            WHEN sentido2_last_10."Velocidade Media" < 50::numeric AND sentido2_last_10."Velocidade Media" >= 30::numeric THEN 'trânsito moderado'::text
+            WHEN sentido2_last_10."Velocidade Media" < 30::numeric AND sentido2_last_10."Velocidade Media" >= 10::numeric THEN 'muito trânsito'::text
+            WHEN sentido2_last_10."Velocidade Media" < 10::numeric AND sentido2_last_10."Velocidade Media" >= 0::numeric THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS "Estado do Trânsito"
+   FROM sentido2_last_10
+  GROUP BY sentido2_last_10."Velocidade Media", sentido2_last_10."Contagem", sentido2_last_10."Velocidade Maxima", sentido2_last_10."Velocidade Minima"
+WITH DATA;
