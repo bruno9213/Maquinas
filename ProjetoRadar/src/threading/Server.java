@@ -66,8 +66,8 @@ public class Server extends Thread {
                 //conexao com clientes 
                 System.out.println("Esperando clientes...");
                 Socket conexao = s.accept();
-                Thread t = new Server(conexao, ss);
                 n_cliente++;
+                Thread t = new Server(conexao, ss);
                 t.start();
                 System.out.println("Nova conexão: cliente nº " + n_cliente);
             }
