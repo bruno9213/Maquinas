@@ -203,3 +203,42 @@ AS
    FROM sentido2_last_10
   GROUP BY sentido2_last_10."Velocidade Media", sentido2_last_10."Contagem", sentido2_last_10."Velocidade Maxima", sentido2_last_10."Velocidade Minima"
 WITH DATA;
+
+
+CREATE MATERIALIZED VIEW public.sentido1
+TABLESPACE pg_default
+AS
+ SELECT sentido1_all.contagem,
+    sentido1_all.velocidade_media,
+    sentido1_all.maxima,
+    sentido1_all.minima,
+        CASE
+            WHEN sentido1_all.contagem = 0 THEN 'pouco trânsito'::text
+            WHEN sentido1_all.velocidade_media >= 50::numeric THEN 'pouco trânsito'::text
+            WHEN sentido1_all.velocidade_media < 50::numeric AND sentido1_all.velocidade_media >= 30::numeric THEN 'trânsito moderado'::text
+            WHEN sentido1_all.velocidade_media < 30::numeric AND sentido1_all.velocidade_media >= 10::numeric THEN 'muito trânsito'::text
+            WHEN sentido1_all.velocidade_media < 10::numeric AND sentido1_all.velocidade_media >= 0::numeric THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS estado
+   FROM sentido1_all
+  GROUP BY sentido1_all.velocidade_media, sentido1_all.contagem, sentido1_all.maxima, sentido1_all.minima
+WITH DATA;
+
+CREATE MATERIALIZED VIEW public.sentido2
+TABLESPACE pg_default
+AS
+ SELECT sentido2_all.contagem,
+    sentido2_all.velocidade_media,
+    sentido2_all.maxima,
+    sentido2_all.minima,
+        CASE
+            WHEN sentido2_all.contagem = 0 THEN 'pouco trânsito'::text
+            WHEN sentido2_all.velocidade_media >= 50::numeric THEN 'pouco trânsito'::text
+            WHEN sentido2_all.velocidade_media < 50::numeric AND sentido2_all.velocidade_media >= 30::numeric THEN 'trânsito moderado'::text
+            WHEN sentido2_all.velocidade_media < 30::numeric AND sentido2_all.velocidade_media >= 10::numeric THEN 'muito trânsito'::text
+            WHEN sentido2_all.velocidade_media < 10::numeric AND sentido2_all.velocidade_media >= 0::numeric THEN 'congestionamento extremo'::text
+            ELSE 'erro'::text
+        END AS estado
+   FROM sentido2_all
+  GROUP BY sentido2_all.velocidade_media, sentido2_all.contagem, sentido2_all.maxima, sentido2_all.minima
+WITH DATA;
