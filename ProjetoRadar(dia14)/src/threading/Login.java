@@ -133,6 +133,8 @@ public class Login extends Thread {
      * @param pass
      * @return
      */
+    
+    
     public boolean autenticarUser(String user, String pass) {
         JDBCConnect c = new JDBCConnect();
         ResultSet rs = c.getQueryResult("select * from login");
@@ -153,6 +155,8 @@ public class Login extends Thread {
         }
         return false;
     }
+    
+    
 
     /**
      * Método checkAdmin recebe uma String com o user e vai à BD verificar se

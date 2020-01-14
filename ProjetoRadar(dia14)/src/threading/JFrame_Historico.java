@@ -45,8 +45,8 @@ public class JFrame_Historico extends javax.swing.JFrame {
         dataS2 = data2.toArray(String[]::new);
         velS2 = vel2.toArray(String[]::new);
         updateTable(sentido);
-        maxVel(velS, velS2);
-        minVel(velS, velS2);
+        jLabel3.setText(""+maxVel(velS, velS2));
+        jLabel33.setText(""+minVel(velS, velS2));
     }
 
     /**
@@ -55,8 +55,8 @@ public class JFrame_Historico extends javax.swing.JFrame {
      * @param vel1
      * @param vel2
      */
-    public void maxVel(String[] vel1, String[] vel2) {
-        ArrayList<Integer> a=new ArrayList<>();
+    public int maxVel(String[] vel1, String[] vel2) {
+        ArrayList<Integer> a = new ArrayList<>();
         for (int i = 0; i < vel1.length; i++) {
             a.add(Integer.parseInt(vel1[i]));
         }
@@ -69,7 +69,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
                 max = a.get(i);
             }
         }
-        jLabel3.setText("" + max);
+        return max;
     }
 
     /**
@@ -78,8 +78,8 @@ public class JFrame_Historico extends javax.swing.JFrame {
      * @param vel1
      * @param vel2
      */
-    public void minVel(String[] vel1, String[] vel2) {
-        ArrayList<Integer> a=new ArrayList<>();
+    public int minVel(String[] vel1, String[] vel2) {
+        ArrayList<Integer> a = new ArrayList<>();
         for (int i = 0; i < vel1.length; i++) {
             a.add(Integer.parseInt(vel1[i]));
         }
@@ -92,7 +92,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
                 min = a.get(i);
             }
         }
-        jLabel33.setText("" + min);
+        return min;
     }
 
     /**
@@ -159,7 +159,7 @@ public class JFrame_Historico extends javax.swing.JFrame {
         jTextArea1.setText("velocidade máxima\nvelocidade mínima\nvelocidade média\n");
         jScrollPane1.setViewportView(jTextArea1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Historico Velocidades");
         setResizable(false);
 
