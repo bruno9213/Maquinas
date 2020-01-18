@@ -1,7 +1,7 @@
 /////////////////// Criar um novo repositório:
 
 git init
-git clone https://github.com/bruno9213/ProjectPeanutButter
+git clone https://github.com/bruno9213/Maquinas
 
 
 /////////////////// Para escolher os ficheiros locais e envia-los para o repositorio:
