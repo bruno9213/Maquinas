@@ -1,4 +1,4 @@
-﻿/////////////////// Criar um novo repositório:
+/////////////////// Criar um novo repositório:
 
 git init
 git clone https://github.com/bruno9213/ProjectPeanutButter
@@ -15,9 +15,3 @@ git push origin master
 /////////////////// Para atualizar o repositorio
 
 git pull
-
-
-
-////////////////7fesghregre
-
-wooooooooooooooooooooooooooo1 + 1
